@@ -7,15 +7,16 @@ const chalk = require(`chalk`);
 const {
   getRandomInt,
   shuffle,
+  readContent,
 } = require(`../../utils`);
 const {
   DEFAULT_COUNT,
   MAX_COUNT,
-  TITLES,
-  SENTENCES,
   ANNOUNCE_LENGTH,
-  CATEGORIES,
   MONTH_RESTRICT,
+  FILE_SENTENCES_PATH,
+  FILE_TITLES_PATH,
+  FILE_CATEGORIES_PATH
 } = require(`./blogConstants`);
 const {ExitCode} = require(`../constants`);
 
@@ -25,12 +26,12 @@ const getRandomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 };
 
-const generateOffers = (count) => {
+const generateOffers = (count, titles, categories, sentences) => {
   return Array(count).fill({}).map(() => {
-    const title = TITLES[getRandomInt(0, TITLES.length - 1)];
-    const announce = shuffle(SENTENCES).slice(1, ANNOUNCE_LENGTH).join(` `);
-    const fullText = shuffle(SENTENCES).slice(1, getRandomInt(1, SENTENCES.length - 1)).join(` `);
-    const category = shuffle(CATEGORIES).slice(0, getRandomInt(1, CATEGORIES.length - 1));
+    const title = titles[getRandomInt(0, titles.length - 1)];
+    const announce = shuffle(sentences).slice(0, ANNOUNCE_LENGTH).join(` `);
+    const fullText = shuffle(sentences).slice(0, getRandomInt(1, sentences.length - 1)).join(` `);
+    const category = shuffle(categories).slice(0, getRandomInt(1, categories.length - 1));
 
     const today = new Date();
     const minDate = new Date(new Date().setMonth(today.getMonth() - MONTH_RESTRICT));
@@ -51,7 +52,11 @@ module.exports = {
       process.exit(ExitCode.uncaughtFatalException);
     }
 
-    const content = JSON.stringify(generateOffers(countOffer));
+    const titles = await readContent(FILE_TITLES_PATH);
+    const categories = await readContent(FILE_CATEGORIES_PATH);
+    const sentences = await readContent(FILE_SENTENCES_PATH);
+
+    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences));
 
     try {
       await fs.writeFile(FILE_NAME, content);
