@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.2.0...v1.2.1) (2021-02-27)
+
+## [1.2.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.1.0...v1.2.0) (2021-02-27)
+
+
+### Features
+
+* раскраска и async/await ([d2f476d](https://github.com/YoginAlex/1708501-typoteka-3/commit/d2f476d095daadf238cc3ebda3fb7a44621d036b))
+
 ## 1.1.0 (2021-02-07)
 
 
