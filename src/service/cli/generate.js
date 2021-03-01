@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require(`fs`).promises;
-const path = require(`path`);
 const chalk = require(`chalk`);
 
 const {
@@ -18,9 +17,7 @@ const {
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH
 } = require(`./blogConstants`);
-const {ExitCode} = require(`../constants`);
-
-const FILE_NAME = path.join(__dirname, `../../../`, `mocks.json`);
+const {ExitCode, MOCK_FILE_PATH} = require(`../constants`);
 
 const getRandomDate = (start, end) => {
   return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -59,7 +56,7 @@ module.exports = {
     const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences));
 
     try {
-      await fs.writeFile(FILE_NAME, content);
+      await fs.writeFile(MOCK_FILE_PATH, content);
       console.info(chalk.green(`Operation success. File created.`));
     } catch (error) {
       console.error(chalk.red(`Can't write data to file...`));
