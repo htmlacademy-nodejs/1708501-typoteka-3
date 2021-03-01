@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.2.1...v1.3.0) (2021-02-28)
+
+
+### Features
+
+* перенёс моковые данные в файлы ([cf138c0](https://github.com/YoginAlex/1708501-typoteka-3/commit/cf138c0160cbe4a58435318b5bdeb3fd6db874dd))
+
 ### [1.2.1](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.2.0...v1.2.1) (2021-02-27)
 
 ## [1.2.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.1.0...v1.2.0) (2021-02-27)
