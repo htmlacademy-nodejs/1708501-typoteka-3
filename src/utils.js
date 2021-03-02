@@ -22,7 +22,7 @@ module.exports.shuffle = (someArray) => {
 module.exports.readContent = async (filePath) => {
   try {
     const content = await fs.readFile(filePath, `utf8`);
-    return content.split(`\n`).filter((str) => !(!str || str.length === 0));
+    return content.split(`\n`).filter((str) => str.trim().length > 0);
   } catch (err) {
     console.error(chalk.red(err));
     return [];
