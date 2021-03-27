@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.4.0...v1.5.0) (2021-03-26)
+
+
+### Features
+
+* blank for routing ([4128c5d](https://github.com/YoginAlex/1708501-typoteka-3/commit/4128c5d28570968e9772fc011f720e0601c1c1fe))
+
 ## [1.4.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.3.1...v1.4.0) (2021-03-01)
 
 
