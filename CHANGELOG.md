@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.6.0...v1.7.0) (2021-04-12)
+
+
+### Features
+
+* переход на express сервер ([8c10053](https://github.com/YoginAlex/1708501-typoteka-3/commit/8c100538fc4c865fa847bbde43374aef8251d653))
+
 ## [1.6.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.5.0...v1.6.0) (2021-04-12)
 
 
