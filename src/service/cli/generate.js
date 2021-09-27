@@ -74,10 +74,17 @@ module.exports = {
       process.exit(ExitCode.uncaughtFatalException);
     }
 
-    const titles = await readContent(FILE_TITLES_PATH);
-    const categories = await readContent(FILE_CATEGORIES_PATH);
-    const sentences = await readContent(FILE_SENTENCES_PATH);
-    const comments = await readContent(FILE_COMMENTS_PATH);
+    const [
+      titles,
+      categories,
+      sentences,
+      comments
+    ] = await Promise.all([
+      readContent(FILE_TITLES_PATH),
+      readContent(FILE_CATEGORIES_PATH),
+      readContent(FILE_SENTENCES_PATH),
+      readContent(FILE_COMMENTS_PATH)
+    ]);
 
     const content = JSON.stringify(
         generateOffers(countOffer, titles, categories, sentences, comments)
