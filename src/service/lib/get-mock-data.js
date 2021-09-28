@@ -10,17 +10,13 @@ let data = null;
 
 const getMockData = async () => {
   if (data !== null) {
-    return Promise.resolve(data);
+    return data;
   }
 
-  try {
-    const fileContent = await fs.readFile(MOCK_FILE_PATH);
-    data = JSON.parse(fileContent);
-  } catch (err) {
-    return Promise.reject(err);
-  }
+  const fileContent = await fs.readFile(MOCK_FILE_PATH);
+  data = JSON.parse(fileContent);
 
-  return Promise.resolve(data);
+  return data;
 };
 
 module.exports = getMockData;
