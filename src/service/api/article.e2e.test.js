@@ -203,6 +203,36 @@ describe(`API changes existent article`, () => {
   );
 });
 
+test(`API returns status code 404 when trying to change non-existent article`, async () => {
+  const app = createAPI();
+  const newArticle = {
+    title: `Новый заголовок`,
+    announce: `Новый анонс`,
+    fullText: `Новый текст`,
+    category: [`Музыка`, `Кино`, `Деревья`]
+  };
+
+  await request(app)
+    .put(`/articles/NOEXST`)
+    .send(newArticle)
+    .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API returns status code 400 when trying to change an article with invalid data`, async () => {
+  const app = createAPI();
+
+  const invalidArticle = {
+    title: `Нет анонса`,
+    fullText: `Новый текст`,
+    category: []
+  };
+
+  await request(app)
+    .put(`/articles/y18OHn`)
+    .send(invalidArticle)
+    .expect(HttpCode.BAD_REQUEST);
+});
+
 describe(`API correctly deletes an article`, () => {
   const app = createAPI();
   let response;
