@@ -4,7 +4,7 @@ const path = require(`path`);
 const pino = require(`pino`);
 const {Env} = require(`../constants`);
 
-const LOG_FILE = path.join(__dirname, `../logs`, `api.log`);
+const LOG_FILE = path.join(__dirname, `../../../`, `logs`, `api.log`);
 const isDevMode = process.env.NODE_ENV === Env.DEVELOPMENT;
 const defaultLogLevel = isDevMode ? `info` : `error`;
 
