@@ -28,6 +28,11 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
 module.exports = {
   DEFAULT_SERVER_PORT,
   API_PREFIX,
@@ -35,5 +40,6 @@ module.exports = {
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
   HttpCode,
-  ExitCode
+  ExitCode,
+  Env
 };
