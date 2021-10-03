@@ -5,7 +5,7 @@ const express = require(`express`);
 const {getLogger} = require(`../lib/logger`);
 const apiRoutes = require(`../api`);
 
-const {HttpCode, DEFAULT_SERVER_PORT, API_PREFIX} = require(`../constants`);
+const {HttpCode, DEFAULT_SERVER_PORT, API_PREFIX, ExitCode} = require(`../constants`);
 
 const logger = getLogger({name: `api`});
 
@@ -49,7 +49,7 @@ module.exports = {
       });
     } catch (err) {
       logger.error(`An error occurred: ${err.message}`);
-      process.exit(1);
+      process.exit(ExitCode.uncaughtFatalException);
     }
   },
 };
