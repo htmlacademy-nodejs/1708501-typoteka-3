@@ -4,6 +4,9 @@ html(lang='ru')
     include partials/meta.pug
     block head
   body
+    mixin insertArticleImage(article)
+      img(class!=attributes.class src=`/img/${article.picture ? article.picture : 'skyscraper@1x.jpg'}` alt=article.title width='460' height='240')
+
     include partials/header.pug
     block content
     include partials/footer.pug
