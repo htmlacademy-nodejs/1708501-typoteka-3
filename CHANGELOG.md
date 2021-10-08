@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.7.0...v1.8.0) (2021-10-08)
+
+
+### Features
+
+* базово добавл логгер ([c5f5b0e](https://github.com/YoginAlex/1708501-typoteka-3/commit/c5f5b0e6323512ceb7cc5919244d0d629d8bd5a0))
+* базово привязал данные в шаблон списка публикаций ([cd77897](https://github.com/YoginAlex/1708501-typoteka-3/commit/cd7789761dec1f93c36de8198dc94c7b2bbf97c3))
+* дабавил настройку LOG_LEVEL через cross-env ([231935d](https://github.com/YoginAlex/1708501-typoteka-3/commit/231935d6beff83fda1ba4571cca98bf0a44357e5))
+* добавил генерацию комментариев ([fe09efc](https://github.com/YoginAlex/1708501-typoteka-3/commit/fe09efcb90087be6296065e0813259052acc8c25))
+* добавил картинки к публикациям ([faeed32](https://github.com/YoginAlex/1708501-typoteka-3/commit/faeed322d1cd7b972abdb21927cd683d5462e0a3))
+* добавил логгер в мидлвары express ([3bfd8e4](https://github.com/YoginAlex/1708501-typoteka-3/commit/3bfd8e40e264b79f0e0edcdbdcc6e3007c9268bf))
+* добавил настройки тестов ([1002dee](https://github.com/YoginAlex/1708501-typoteka-3/commit/1002dee4731bf482b5a5dc77bae96d067e55f91d))
+* добавил разные уровни логирования ([7a357d8](https://github.com/YoginAlex/1708501-typoteka-3/commit/7a357d8df2dcb3b6d80b19afb83e3218cffe171c))
+* добавил тесты для категорий ([360e58c](https://github.com/YoginAlex/1708501-typoteka-3/commit/360e58ca4bdb7ba38ff447ff3e78bca20643d8af))
+* добавил тесты для поиска ([5bba51f](https://github.com/YoginAlex/1708501-typoteka-3/commit/5bba51fa3928ee75aafd27b3ff467d76d61ae48c))
+* добавил тесты для публикаций и комментариев ([977f1a9](https://github.com/YoginAlex/1708501-typoteka-3/commit/977f1a98e8289d86d8c0076697decdb6e193205b))
+* оживил поиск ([a98864f](https://github.com/YoginAlex/1708501-typoteka-3/commit/a98864f70c2c8a9c2dd7b14fa3e55f88bf15007a))
+* передал данные в шаблоны ([23bf63c](https://github.com/YoginAlex/1708501-typoteka-3/commit/23bf63c44b77eebfeb0704a619acdc7e5390cf1a))
+* публикация новой статьи ([2ddf9a9](https://github.com/YoginAlex/1708501-typoteka-3/commit/2ddf9a974466c45446aeeb03b6c254cf6a4b166f))
+* реализовал REST API ([7450a06](https://github.com/YoginAlex/1708501-typoteka-3/commit/7450a0634e8c69caee1d0e37743f068ecfbab69c))
+
+
+### Bug Fixes
+
+* remove console.log ([9e703a1](https://github.com/YoginAlex/1708501-typoteka-3/commit/9e703a1b40bd0b25eb225b0ff4165f71a8143a0f))
+* some prettier fixes ([5b4c550](https://github.com/YoginAlex/1708501-typoteka-3/commit/5b4c550ba1ba6405f78dd15a95f00351794cc2a0))
+* вынес логи в корень приложения ([e0c3697](https://github.com/YoginAlex/1708501-typoteka-3/commit/e0c3697c567dae422a2ff18196eb41c47f51be61))
+* добавил недостающие тесты для публикации ([ff19002](https://github.com/YoginAlex/1708501-typoteka-3/commit/ff19002b1ecd140a6135377c4c4c5dcffe1db8f0))
+* зафиксировал версии npm пакетов ([2b4a9e4](https://github.com/YoginAlex/1708501-typoteka-3/commit/2b4a9e49810698914a544e4fa231580669e78114))
+* поправил замечания после ревью ([ce9ed3e](https://github.com/YoginAlex/1708501-typoteka-3/commit/ce9ed3e0102d8edd1a557540a7c6ada1a1f1b461))
+* поправил функцию читающую моки ([2a1f346](https://github.com/YoginAlex/1708501-typoteka-3/commit/2a1f34640cae204a788613765edee96b60adf14d))
+
 ## [1.7.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.6.0...v1.7.0) (2021-04-12)
 
 
