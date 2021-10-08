@@ -1,12 +1,60 @@
 'use strict';
 
 
+const path = require(`path`);
+const multer = require(`multer`);
+const {nanoid} = require(`nanoid`);
 const {Router} = require(`express`);
-const articlesRouter = new Router();
+
 const api = require(`../api`).getAPI();
+const {getLogger} = require(`../../service/lib/logger`);
+
+const logger = getLogger({name: `api`});
+const articlesRouter = new Router();
+
+const UPLOAD_DIR = `../upload/img/`;
+
+const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+
+const storage = multer.diskStorage({
+  destination: uploadDirAbsolute,
+  filename: (req, file, cb) => {
+    const uniqueName = nanoid(10);
+    const extension = file.originalname.split(`.`).pop();
+    cb(null, `${uniqueName}.${extension}`);
+  }
+});
+const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles-by-category`));
-articlesRouter.get(`/add`, (req, res) => res.render(`new-post`));
+
+articlesRouter.get(`/add`, async (req, res) => {
+  const categories = await api.getCategories();
+  res.render(`article/new-article`, {categories});
+});
+
+articlesRouter.post(`/add`,
+    upload.single(`uploadPicture`),
+    async ({body, file}, res) => {
+
+      const articleData = {
+        title: body.title,
+        createdDate: body.createdDate,
+        announce: body.announce,
+        fullText: body.fullText,
+        picture: file ? file.filename : ``,
+        category: Array.isArray(body.category) ? body.category : [body.category],
+      };
+
+      try {
+        await api.createArticle(articleData);
+        res.redirect(`/my`);
+      } catch (error) {
+        logger.error(`An error article create: ${error.message}`);
+        res.redirect(`back`);
+      }
+    }
+);
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
   const {id} = req.params;
