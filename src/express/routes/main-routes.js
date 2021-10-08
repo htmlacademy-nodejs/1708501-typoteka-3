@@ -14,7 +14,7 @@ mainRouter.get(`/search`, async (req, res) => {
   try {
     const {query} = req.query;
     const results = await api.search(query);
-    console.log(`results`, results);
+
     res.render(`search`, {
       results
     });
