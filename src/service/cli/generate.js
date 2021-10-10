@@ -19,6 +19,11 @@ const {
 } = require(`./blogConstants`);
 const {ExitCode, MOCK_FILE_PATH} = require(`../constants`);
 
+const getRandomPicture = () => {
+  const mockPictureNames = [`forest@2x`, `sea@2x`, `skyscraper@2x`];
+  return `${mockPictureNames[getRandomInt(0, 2)]}.jpg`;
+};
+
 const getRandomDate = (start, end) => {
   return new Date(
       start.getTime() + Math.random() * (end.getTime() - start.getTime())
@@ -40,6 +45,7 @@ const generateOffers = (count, titles, categories, sentences, mockComments) => {
       const id = nanoid(MAX_ID_LENGTH);
       const title = titles[getRandomInt(0, titles.length - 1)];
       const announce = shuffle(sentences).slice(0, ANNOUNCE_LENGTH).join(` `);
+      const picture = getRandomPicture();
       const fullText = shuffle(sentences)
         .slice(0, getRandomInt(1, sentences.length - 1))
         .join(` `);
@@ -59,7 +65,7 @@ const generateOffers = (count, titles, categories, sentences, mockComments) => {
           mockComments
       );
 
-      return {id, title, createdDate, announce, fullText, category, comments};
+      return {id, title, createdDate, announce, picture, fullText, category, comments};
     });
 };
 

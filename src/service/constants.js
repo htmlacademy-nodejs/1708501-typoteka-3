@@ -28,7 +28,7 @@ const HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-const Env = {
+const ApplicationEnvironment = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`
 };
@@ -41,5 +41,5 @@ module.exports = {
   USER_ARGV_INDEX,
   HttpCode,
   ExitCode,
-  Env
+  ApplicationEnvironment
 };
