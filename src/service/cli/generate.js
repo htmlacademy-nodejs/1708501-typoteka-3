@@ -20,7 +20,7 @@ const {
 const {ExitCode, MOCK_FILE_PATH} = require(`../constants`);
 
 const getRandomPicture = () => {
-  const mockPictureNames = [`forest@2x`, `sea@2x`, `skyscraper@2x`];
+  const mockPictureNames = [`forest`, `sea`, `skyscraper`];
   return `${mockPictureNames[getRandomInt(0, 2)]}.jpg`;
 };
 
