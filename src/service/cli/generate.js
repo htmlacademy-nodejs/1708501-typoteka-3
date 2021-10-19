@@ -18,17 +18,7 @@ const {
   FILE_COMMENTS_PATH,
 } = require(`./blogConstants`);
 const {ExitCode, MOCK_FILE_PATH} = require(`../constants`);
-
-const getRandomPicture = () => {
-  const mockPictureNames = [`forest`, `sea`, `skyscraper`];
-  return `${mockPictureNames[getRandomInt(0, 2)]}.jpg`;
-};
-
-const getRandomDate = (start, end) => {
-  return new Date(
-      start.getTime() + Math.random() * (end.getTime() - start.getTime())
-  );
-};
+const {getRandomPicture, getRandomDate} = require(`./helpers`);
 
 const generateComments = (count, comments) =>
   Array(count)
@@ -65,7 +55,16 @@ const generateOffers = (count, titles, categories, sentences, mockComments) => {
           mockComments
       );
 
-      return {id, title, createdDate, announce, picture, fullText, category, comments};
+      return {
+        id,
+        title,
+        createdDate,
+        announce,
+        picture,
+        fullText,
+        category,
+        comments,
+      };
     });
 };
 
@@ -80,16 +79,11 @@ module.exports = {
       process.exit(ExitCode.uncaughtFatalException);
     }
 
-    const [
-      titles,
-      categories,
-      sentences,
-      comments
-    ] = await Promise.all([
+    const [titles, categories, sentences, comments] = await Promise.all([
       readContent(FILE_TITLES_PATH),
       readContent(FILE_CATEGORIES_PATH),
       readContent(FILE_SENTENCES_PATH),
-      readContent(FILE_COMMENTS_PATH)
+      readContent(FILE_COMMENTS_PATH),
     ]);
 
     const content = JSON.stringify(

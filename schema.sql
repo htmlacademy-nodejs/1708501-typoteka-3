@@ -1,7 +1,7 @@
-DROP TABLE IF EXISTS roles;
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS articles;
+DROP TABLE IF EXISTS roles CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS categories CASCADE;
+DROP TABLE IF EXISTS articles CASCADE;
 DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS articles_categories;
 
@@ -22,18 +22,18 @@ CREATE TABLE users (
     email varchar(255) UNIQUE NOT NULL,
     password_hash varchar(255) NOT NULL,
     avatar varchar(50),
-    role_id int NOT NULL,
-    CONSTRAINT roles FOREIGN KEY (role_id)
+    role_id integer NOT NULL DEFAULT 0,
+    CONSTRAINT user_role FOREIGN KEY (role_id)
         REFERENCES public.roles (id) MATCH SIMPLE
-        ON UPDATE SET NULL
-        ON DELETE SET NULL
+        ON UPDATE SET DEFAULT
+        ON DELETE SET DEFAULT
         NOT VALID
 );
 
 CREATE TABLE articles (
     id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title varchar(255) NOT NULL,
-    announce varchar(255) NOT NULL,
+    announce varchar(1000) NOT NULL,
     full_text text,
     picture varchar(50),
     created_date date DEFAULT CURRENT_DATE,
@@ -70,3 +70,8 @@ CREATE TABLE articles_categories (
 );
 
 CREATE INDEX ON articles(title);
+
+INSERT INTO roles(name) VALUES
+('Guest'),
+('Reader'),
+('Author');
