@@ -22,9 +22,12 @@ ALTER TABLE articles ENABLE TRIGGER ALL;
 ALTER TABLE articles_categories DISABLE TRIGGER ALL;
 INSERT INTO articles_categories(article_id, category_id) VALUES
 (1, 5),
+(1, 2),
 (2, 8),
 (3, 4),
+(3, 1),
 (4, 7),
+(4, 5),
 (5, 7);
 ALTER TABLE articles_categories ENABLE TRIGGER ALL;
 ALTER TABLE comments DISABLE TRIGGER ALL;
