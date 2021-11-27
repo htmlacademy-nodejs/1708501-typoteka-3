@@ -43,7 +43,7 @@ articlesRouter.post(`/add`,
         announce: body.announce,
         fullText: body.fullText,
         picture: file ? file.filename : ``,
-        category: Array.isArray(body.category) ? body.category : [body.category],
+        categories: Array.isArray(body.categories) ? body.categories : [body.categories],
       };
 
       try {

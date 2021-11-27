@@ -95,14 +95,14 @@ block content
         each article of articles
           li.preview__item
             ul.preview__breadcrumbs
-              each category of article.category
+              each category of article.categories
                 li.preview__breadcrumbs-item
                   a.preview__breadcrumbs-link(href='#') #{category}
 
             .preview__background
               +insertArticleImage(article)(class="preview__background-image")
 
-            time.preview__time(datetime=`${article.createdDate}`) #{article.createdDate}
+            time.preview__time(datetime=`${article.createdAt}`) #{article.createdAt}
             h3.preview__name
               a.preview__name-link(href='#') #{article.title}
             p.preview__text #{article.announce}

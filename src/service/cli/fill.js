@@ -116,7 +116,7 @@ const runFillData = async (args) => {
   );
   const articleCategories = articles.map((article, index) => ({
     articleId: index + 1,
-    categoryId: article.category[0],
+    categoryId: article.categories[0],
   }));
 
   const userValues = defaultUsers
