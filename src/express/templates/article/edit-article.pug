@@ -38,8 +38,8 @@ block content
                 .form__field
                   label Категории
                     select(name="category" data-label="Выбрать категорию" multiple="")
-                      each category, index in categories
-                        option(value=index selected=article.categories.includes(category)) #{category}
+                      each category of categories
+                        option(value=category.id selected=article.categories.includes(category)) #{category.name}
 
                 .new-publication__category-wrapper
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию

@@ -60,6 +60,14 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
   const [article, categories] = await Promise.all([api.getArticle(id), api.getCategories()]);
   res.render(`article/edit-article`, {article, categories});
 });
-articlesRouter.get(`/:id`, (req, res) => res.render(`post`));
+
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const [post, categories] = await Promise.all([
+    api.getArticle(id),
+    api.getCategories()
+  ]);
+  res.render(`article/article`, {post, categories});
+});
 
 module.exports = articlesRouter;

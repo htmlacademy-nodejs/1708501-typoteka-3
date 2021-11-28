@@ -6,7 +6,7 @@ const api = require(`../api`).getAPI();
 const mainRouter = new Router();
 
 mainRouter.get(`/`, async (req, res) => {
-  const articles = await api.getArticles();
+  const articles = await api.getArticles({comments: true});
   res.render(`main`, {articles});
 });
 
