@@ -42,8 +42,8 @@ const define = (sequelize) =>
       },
       {
         sequelize,
-        modelName: `Comment`,
-        tableName: `comments`,
+        modelName: `User`,
+        tableName: `users`
       }
   );
 

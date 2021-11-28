@@ -32,10 +32,6 @@ const define = (sequelize) =>
           allowNull: false,
         },
         picture: DataTypes.STRING,
-        userId: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-        }
       },
       {
         sequelize,

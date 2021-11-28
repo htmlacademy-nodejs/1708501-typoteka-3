@@ -40,7 +40,7 @@ module.exports = (app, articleService, commentService) => {
   route.post(`/`, articleValidator, async (req, res) => {
     const article = await articleService.create(req.body);
 
-    res.status(HttpCode.CREATED).json(article);
+    return res.status(HttpCode.CREATED).json(article);
   });
 
   // PUT /api/articles/:articleId - редактирует определённую публикацию;

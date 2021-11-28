@@ -33,7 +33,7 @@ Content-Type: application/json
 
 ###
 # PUT /api/articles/:articleId — редактирует определённую публикацию;
-PUT http://localhost:3000/api/articles/112
+PUT http://localhost:3000/api/articles/13
 Content-Type: application/json
 
 {
@@ -53,11 +53,11 @@ GET http://localhost:3000/api/articles/98/comments
 
 ###
 # DELETE /api/articles/:articleId/comments/:commentId — удаляет из определённой публикации комментарий с идентификатором;
-DELETE http://localhost:3000/api/articles/98/comments/246
+DELETE http://localhost:3000/api/articles/5/comments/12
 
 ###
 # POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
-POST http://localhost:3000/api/articles/98/comments
+POST http://localhost:3000/api/articles/1/comments
 Content-Type: application/json
 
 {

@@ -16,13 +16,15 @@ const category = require(`./category`);
 const article = require(`./article`);
 const search = require(`./search`);
 
-const app = new Router();
-defineModels(sequelize);
 
-(async () => {
+module.exports = async () => {
+  defineModels(sequelize);
+  const app = new Router();
+
   category(app, new CategoryService(sequelize));
   search(app, new SearchService(sequelize));
   article(app, new ArticleService(sequelize), new CommentService(sequelize));
-})();
 
-module.exports = app;
+  return app;
+};
+
