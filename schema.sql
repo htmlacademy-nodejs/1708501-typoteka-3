@@ -36,7 +36,6 @@ CREATE TABLE articles (
     announce varchar(1000) NOT NULL,
     full_text text,
     picture varchar(50),
-    created_date date DEFAULT CURRENT_DATE,
     user_id integer NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id)
         ON DELETE CASCADE

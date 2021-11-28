@@ -39,7 +39,6 @@ articlesRouter.post(`/add`,
 
       const articleData = {
         title: body.title,
-        createdDate: body.createdDate,
         announce: body.announce,
         fullText: body.fullText,
         picture: file ? file.filename : ``,

@@ -10,20 +10,15 @@ const {
   DEFAULT_COUNT,
   MAX_COUNT,
   MAX_COMMENTS,
-  MONTH_RESTRICT,
   FILE_SENTENCES_PATH,
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
   FILE_COMMENTS_PATH,
 } = require(`./blogConstants`);
 const {ExitCode} = require(`../constants`);
-const {getRandomPicture, getRandomDate} = require(`./helpers`);
+const {getRandomPicture} = require(`./helpers`);
 
 const FILL_DB_FILE = path.join(__dirname, `../../../`, `fill-db.sql`);
-const TODAY = new Date();
-const MIN_DATE = new Date(
-    new Date().setMonth(TODAY.getMonth() - MONTH_RESTRICT)
-);
 
 const defaultUsers = [
   {
@@ -76,8 +71,7 @@ const generateArticles = (
         .join(` `)
         .substr(0, 1000),
       picture: getRandomPicture(),
-      createdDate: new Date(getRandomDate(MIN_DATE, TODAY)).toUTCString(),
-      category: [getRandomInt(1, categoryCount)],
+      categories: [getRandomInt(1, categoryCount)],
       comments: generateComments(
           getRandomInt(2, MAX_COMMENTS),
           index + 1,
@@ -130,8 +124,8 @@ const runFillData = async (args) => {
 
   const articleValues = articles
     .map(
-        ({title, announce, fullText, picture, createdDate, userId}) =>
-          `('${title}', '${announce}', '${fullText}', '${picture}', '${createdDate}', '${userId}')`
+        ({title, announce, fullText, picture, userId}) =>
+          `('${title}', '${announce}', '${fullText}', '${picture}', '${userId}')`
     )
     .join(`,\n`);
 
@@ -151,7 +145,7 @@ ${userValues};
 INSERT INTO categories(name) VALUES
 ${categoryValues};
 ALTER TABLE articles DISABLE TRIGGER ALL;
-INSERT INTO articles(title, announce, full_text, picture, created_date, user_id) VALUES
+INSERT INTO articles(title, announce, full_text, picture, user_id) VALUES
 ${articleValues};
 ALTER TABLE articles ENABLE TRIGGER ALL;
 ALTER TABLE articles_categories DISABLE TRIGGER ALL;

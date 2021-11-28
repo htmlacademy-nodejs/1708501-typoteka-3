@@ -4,15 +4,15 @@ const {Router} = require(`express`);
 const {HttpCode} = require(`../constants`);
 
 
-module.exports = (app, service) => {
+module.exports = (app, categoryService) => {
   const route = new Router();
 
   app.use(`/categories`, route);
 
   // GET /api/categories — возвращает список категорий;
-  route.get(`/`, (req, res) => {
-    const categories = service.findAll();
-    res.status(HttpCode.OK)
+  route.get(`/`, async (req, res) => {
+    const categories = await categoryService.findAll();
+    return res.status(HttpCode.OK)
       .json(categories);
   });
 };

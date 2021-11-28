@@ -2,8 +2,12 @@
 GET http://localhost:3000/api/articles
 
 ###
+# GET /api/articles — ресурс возвращает список публикаций с комментарием;
+GET http://localhost:3000/api/articles?comments=true
+
+###
 # GET /api/articles/:articleId — возвращает полную информацию о публикации;
-GET http://localhost:3000/api/articles/ALOIat
+GET http://localhost:3000/api/articles/98
 
 ###
 # GET /api/categories — возвращает список категорий;
@@ -18,36 +22,38 @@ Content-Type: application/json
   "title": "Учим HTML и CSS 2 раза",
   "announce": "Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция.",
   "fullText": "Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция.",
-  "category": ["Музыка"]
+  "picture": "path_to_image.jpg",
+  "userId": 1,
+  "categories": [1, 2]
 }
 
 ###
 # PUT /api/articles/:articleId — редактирует определённую публикацию;
-PUT http://localhost:3000/api/articles/OUn3Yf
+PUT http://localhost:3000/api/articles/112
 Content-Type: application/json
 
 {
   "title": "НОВОЕ Учим HTML и CSS 2 раза",
   "announce": "НОВОЕ Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция.",
   "fullText": "НОВОЕ Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция. Золотое сечение — соотношение двух величин, гармоническая пропорция.",
-  "category": ["Музыка", "Программирование"]
+  "categories": ["Музыка", "Программирование"]
 }
 
 ###
 # DELETE /api/articles/:articleId — удаляет определённую публикацию;
-DELETE http://localhost:3000/api/articles/rtFr37
+DELETE http://localhost:3000/api/articles/112
 
 ###
 # GET /api/articles/:articleId/comments — возвращает список комментариев определённой публикации;
-GET http://localhost:3000/api/articles/363jR4/comments
+GET http://localhost:3000/api/articles/98/comments
 
 ###
 # DELETE /api/articles/:articleId/comments/:commentId — удаляет из определённой публикации комментарий с идентификатором;
-DELETE http://localhost:3000/api/articles/363jR4/comments/kk07D_
+DELETE http://localhost:3000/api/articles/98/comments/246
 
 ###
 # POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
-POST http://localhost:3000/api/articles/5KWvbL/comments
+POST http://localhost:3000/api/articles/98/comments
 Content-Type: application/json
 
 {
@@ -56,4 +62,4 @@ Content-Type: application/json
 
 ###
 # Поиск
-GET http://localhost:3000/api/search?query=учим
+GET http://localhost:3000/api/search?query=Учим
