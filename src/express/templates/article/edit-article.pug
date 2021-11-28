@@ -39,7 +39,7 @@ block content
                   label Категории
                     select(name="category" data-label="Выбрать категорию" multiple="")
                       each category of categories
-                        option(value=category.id selected=article.categories.includes(category)) #{category.name}
+                        option(value=category.id selected=article.categories.includes(category.id)) #{category.name}
 
                 .new-publication__category-wrapper
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию

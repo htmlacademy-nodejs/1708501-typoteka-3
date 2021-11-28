@@ -11,7 +11,9 @@ module.exports = (app, categoryService) => {
 
   // GET /api/categories — возвращает список категорий;
   route.get(`/`, async (req, res) => {
-    const categories = await categoryService.findAll();
+    const {count} = req.query;
+    const categories = await categoryService.findAll(count);
+
     return res.status(HttpCode.OK)
       .json(categories);
   });

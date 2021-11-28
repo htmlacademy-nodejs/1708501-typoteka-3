@@ -27,8 +27,8 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  getCategories() {
-    return this._load(`/categories`);
+  getCategories(count) {
+    return this._load(`/categories`, {params: {count}});
   }
 
   createArticle(data) {
