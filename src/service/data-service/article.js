@@ -27,7 +27,6 @@ class ArticleService {
     if (needComments) {
       include.push(Alias.COMMENTS);
     }
-    console.log(`include`, include);
     const articles = await this._Article.findAll({
       include,
       order: [[`createdAt`, `DESC`]],
