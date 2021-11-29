@@ -15,9 +15,14 @@ module.exports = (app, articleService, commentService) => {
 
   // GET /api/articles - ресурс возвращает список публикаций;
   route.get(`/`, async (req, res) => {
-    const {comments} = req.query;
-    const needComments = comments === `true`;
-    const articles = await articleService.findAll(needComments);
+    const {offset, limit, comments} = req.query;
+
+    let articles;
+    if (limit || offset) {
+      articles = await articleService.findPage({limit, offset});
+    } else {
+      articles = await articleService.findAll(comments === `true`);
+    }
 
     return res.status(HttpCode.OK).json(articles);
   });
