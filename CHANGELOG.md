@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.8.0...v1.9.0) (2021-11-28)
+
+
+### Features
+
+* добавил sql схемы транзакций ([efb8e81](https://github.com/YoginAlex/1708501-typoteka-3/commit/efb8e8180d3480600d83d735b044a144c6431b88))
+* добавил генератор SQL файла для заполнения базы ([7a91168](https://github.com/YoginAlex/1708501-typoteka-3/commit/7a9116810510d77a47955fb98cfc7b7bd83a15a2))
+* добавил файл с запросами к БД ([1eecddd](https://github.com/YoginAlex/1708501-typoteka-3/commit/1eecddd691537c585414edcbc48ce724a0208d92))
+* оживил filldb ([1655b25](https://github.com/YoginAlex/1708501-typoteka-3/commit/1655b25018144b23b7b80d5882bd7c8c667d15b3))
+* поправил отображение категорий и отдельной публикации ([0744ebd](https://github.com/YoginAlex/1708501-typoteka-3/commit/0744ebd31604656755989630bdfffb95fae3d55d))
+* привёл в порядок API и проверил на api.http ([0c328ab](https://github.com/YoginAlex/1708501-typoteka-3/commit/0c328ab056ae263882ded56d0654f9cf21967919))
+* ссылки на публикации теперь работают ([3bca27a](https://github.com/YoginAlex/1708501-typoteka-3/commit/3bca27adf0097f96d8da5993de141d6adb8830fc))
+* тесты ([b5ec469](https://github.com/YoginAlex/1708501-typoteka-3/commit/b5ec469cff7fa41626040da5b93a2ec2889200f6))
+* устанавливаем подключение к PostgreSQL БД ([2bb5e54](https://github.com/YoginAlex/1708501-typoteka-3/commit/2bb5e549f8c509a3cacbf82c89a10056c3c6bdb2))
+
+
+### Bug Fixes
+
+* добавил правила в gitignore ([8d97ad8](https://github.com/YoginAlex/1708501-typoteka-3/commit/8d97ad841c30977a795dc82ae86e038770a88460))
+* зафиксировал upload папку в git ([b0ae21b](https://github.com/YoginAlex/1708501-typoteka-3/commit/b0ae21b933ae8165cf56135e0c647a7cd229c591))
+* починил добавление категорий, при создании публикации ([462835b](https://github.com/YoginAlex/1708501-typoteka-3/commit/462835be4a2ba20ca69ec4c0c2c62f3af7cff0bb))
+* правки после ревью ([df066f2](https://github.com/YoginAlex/1708501-typoteka-3/commit/df066f244615bc648eb28ab7768a4a4926f3f766))
+
 ## [1.8.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.7.0...v1.8.0) (2021-10-08)
 
 

@@ -22,7 +22,7 @@ SELECT
   articles.id,
   articles.title,
   articles.announce,
-  articles.created_date,
+  articles.createdAt,
   users.first_name,
   users.last_name,
   users.email,
@@ -34,7 +34,7 @@ FROM articles
   LEFT JOIN comments ON comments.article_id = articles.id
   JOIN users ON users.id = articles.user_id
   GROUP BY articles.id, users.id
-  ORDER BY articles.created_date DESC;
+  ORDER BY articles.createdAt DESC;
 
 -- Получить полную информацию определённой публикации (идентификатор публикации, заголовок публикации, анонс, полный текст публикации, дата публикации, путь к изображению, имя и фамилия автора, контактный email, количество комментариев, наименование категорий);
 

@@ -39,11 +39,10 @@ articlesRouter.post(`/add`,
 
       const articleData = {
         title: body.title,
-        createdDate: body.createdDate,
         announce: body.announce,
         fullText: body.fullText,
         picture: file ? file.filename : ``,
-        category: Array.isArray(body.category) ? body.category : [body.category],
+        categories: Array.isArray(body.categories) ? body.categories : [body.categories],
       };
 
       try {
@@ -61,6 +60,12 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
   const [article, categories] = await Promise.all([api.getArticle(id), api.getCategories()]);
   res.render(`article/edit-article`, {article, categories});
 });
-articlesRouter.get(`/:id`, (req, res) => res.render(`post`));
+
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const article = await api.getArticle(id);
+
+  res.render(`article/article`, {article});
+});
 
 module.exports = articlesRouter;

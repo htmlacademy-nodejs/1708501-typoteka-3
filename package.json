@@ -1,6 +1,6 @@
 {
   "name": "1708501-typoteka-3",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "jest": "27.2.4",
     "nodemon": "2.0.13",
     "pino-pretty": "7.0.1",
+    "sqlite3": "5.0.2",
     "standard-version": "9.3.1",
     "supertest": "6.1.6"
   },
