@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.9.0...v1.10.0) (2021-11-29)
+
+
+### Features
+
+* сделал пагинацию на main странице ([189e2ae](https://github.com/YoginAlex/1708501-typoteka-3/commit/189e2aecfefeda26dcf1e24b2d05a2ceb259420d))
+
+
+### Bug Fixes
+
+* убрал лишние console.log ([51be9b5](https://github.com/YoginAlex/1708501-typoteka-3/commit/51be9b5cefdeec34caa79c742c63a53d037a96e0))
+* убрал лишние коментарии ([3ea3753](https://github.com/YoginAlex/1708501-typoteka-3/commit/3ea37530647d7a2d7222cb7f3eb64a8735c80c34))
+
 ## [1.9.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.8.0...v1.9.0) (2021-11-28)
 
 

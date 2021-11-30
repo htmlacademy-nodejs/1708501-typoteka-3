@@ -21,10 +21,8 @@ const define = (sequelize) => {
     foreignKey: `articleId`,
     onDelete: `cascade`,
   });
-  // Article.belongsTo(User, {foreignKey: `userId`});
 
   Comment.belongsTo(Article, {foreignKey: `articleId`});
-  // Comment.belongsTo(User, {foreignKey: `userId`});
 
   ArticleCategory.init({}, {sequelize});
 
@@ -38,6 +36,10 @@ const define = (sequelize) => {
   });
   Category.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
 
+  // TODO: проработать связи с таблицей пользователей
+  // и заполнять таблицу пользователе при filldb
+  // Comment.belongsTo(User, {foreignKey: `userId`});
+  // Article.belongsTo(User, {foreignKey: `userId`});
   // User.hasMany(Comment, {as: Alias.COMMENTS, foreignKey: `userId`});
   // User.hasMany(Article, {as: Alias.ARTICLES, foreignKey: `userId`});
 

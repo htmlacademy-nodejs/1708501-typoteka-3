@@ -27,7 +27,6 @@ class ArticleService {
     if (needComments) {
       include.push(Alias.COMMENTS);
     }
-
     const articles = await this._Article.findAll({
       include,
       order: [[`createdAt`, `DESC`]],
@@ -45,6 +44,19 @@ class ArticleService {
       where: {id},
     });
     return !!affectedRows;
+  }
+
+  async findPage({limit, offset}) {
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [Alias.CATEGORIES, Alias.COMMENTS],
+      order: [
+        [`createdAt`, `DESC`]
+      ],
+      distinct: true
+    });
+    return {count, articles: rows};
   }
 }
 
