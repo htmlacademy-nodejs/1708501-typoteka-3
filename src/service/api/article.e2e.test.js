@@ -143,10 +143,11 @@ describe(`API returns an article with given id`, () => {
 
 describe(`API creates an article if data is valid`, () => {
   const newArticle = {
-    title: `Новый заголовок`,
-    announce: `Новый анонс`,
+    title: `Вот заголовок больше 30 символов`,
+    announce: `А тут у нас анонс более 30 символов`,
     fullText: `Новый текст`,
     categories: [1, 2, 3],
+    picture: `picture.png`
   };
 
   let app;
@@ -173,6 +174,7 @@ describe(`API refuses to create an article if data is invalid`, () => {
     announce: `Новый анонс`,
     fullText: `Новый текст`,
     category: [4, 5, 6],
+    picture: `asd.bmp`
   };
 
   let app;
@@ -195,8 +197,8 @@ describe(`API refuses to create an article if data is invalid`, () => {
 
 describe(`API changes existent article`, () => {
   const newArticle = {
-    title: `Новый заголовок`,
-    announce: `Новый анонс`,
+    title: `Вот новый заголовок больше 30 символов`,
+    announce: `А тут у нас новый анонс более 30 символов`,
     fullText: `Новый текст`,
     categories: [1, 2, 4],
   };
@@ -215,7 +217,7 @@ describe(`API changes existent article`, () => {
   test(`Article is really changed`, () =>
     request(app)
       .get(`/articles/3`)
-      .expect((res) => expect(res.body.title).toBe(`Новый заголовок`)));
+      .expect((res) => expect(res.body.title).toBe(newArticle.title)));
 });
 
 test(`API returns status code 404 when trying to change non-existent article`, async () => {
@@ -239,7 +241,8 @@ test(`API returns status code 400 when trying to change an article with invalid 
   const invalidArticle = {
     title: `Нет анонса`,
     fullText: `Новый текст`,
-    categories: []
+    categories: [],
+    picture: `asd.bmp`
   };
 
   await request(app)
@@ -292,7 +295,7 @@ describe(`API returns a list of comments to given article`, () => {
 
 describe(`API creates a comment if data is valid`, () => {
   const newComment = {
-    text: `Валидный коммент`,
+    text: `Валидный коммент содержит больше 20 символов`,
   };
 
   let app;
@@ -316,7 +319,9 @@ describe(`API creates a comment if data is valid`, () => {
 });
 
 test(`API refuses to create a comment when data is invalid, and returns status code 400`, async () => {
-  const invalidComment = {};
+  const invalidComment = {
+    text: `Меньше 20 символов`,
+  };
 
   const app = await createAPI();
   await request(app)
