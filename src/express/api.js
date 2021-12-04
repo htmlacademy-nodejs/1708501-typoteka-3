@@ -1,6 +1,7 @@
 "use strict";
 
 const axios = require(`axios`);
+const {HttpMethod} = require(`../service/constants`);
 
 class API {
   constructor(baseURL, timeout) {
@@ -15,7 +16,7 @@ class API {
     return response.data;
   }
 
-  getArticles(offset, limit, comments) {
+  getArticles({offset, limit, comments}) {
     return this._load(`/articles`, {params: {offset, limit, comments}});
   }
 
@@ -33,7 +34,21 @@ class API {
 
   createArticle(data) {
     return this._load(`/articles`, {
-      method: `POST`,
+      method: HttpMethod.POST,
+      data
+    });
+  }
+
+  editArticle(id, data) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.PUT,
+      data
+    });
+  }
+
+  createComment(id, data) {
+    return this._load(`/articles/${id}/comments`, {
+      method: HttpMethod.POST,
       data
     });
   }

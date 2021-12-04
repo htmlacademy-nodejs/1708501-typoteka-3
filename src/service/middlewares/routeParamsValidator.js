@@ -9,7 +9,7 @@ const schema = Joi.object({
 });
 
 module.exports = (req, res, next) => {
-  const params = req.params;
+  const {params} = req;
   const {error} = schema.validate(params);
 
   if (error) {

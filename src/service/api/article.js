@@ -17,8 +17,8 @@ module.exports = (app, articleService, commentService) => {
   // GET /api/articles - ресурс возвращает список публикаций;
   route.get(`/`, async (req, res) => {
     const {offset, limit, comments} = req.query;
-
     let articles;
+
     if (limit || offset) {
       articles = await articleService.findPage({limit, offset});
     } else {
