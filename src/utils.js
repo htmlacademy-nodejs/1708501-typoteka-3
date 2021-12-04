@@ -31,3 +31,7 @@ module.exports.readContent = async (filePath) => {
     return [];
   }
 };
+
+module.exports.prepareErrors = (errors) => {
+  return errors.response.data.split(`\n`);
+};

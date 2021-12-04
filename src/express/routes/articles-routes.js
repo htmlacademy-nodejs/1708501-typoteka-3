@@ -8,6 +8,7 @@ const {Router} = require(`express`);
 
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
+const {prepareErrors} = require(`../../utils`);
 
 const logger = getLogger({name: `api`});
 const articlesRouter = new Router();
@@ -15,6 +16,10 @@ const articlesRouter = new Router();
 const UPLOAD_DIR = `../upload/img/`;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+
+const getAddArticleData = () => {
+  return api.getCategories();
+};
 
 const storage = multer.diskStorage({
   destination: uploadDirAbsolute,
@@ -29,14 +34,13 @@ const upload = multer({storage});
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles-by-category`));
 
 articlesRouter.get(`/add`, async (req, res) => {
-  const categories = await api.getCategories();
+  const categories = await getAddArticleData();
   res.render(`article/new-article`, {categories});
 });
 
 articlesRouter.post(`/add`,
     upload.single(`uploadPicture`),
     async ({body, file}, res) => {
-
       const articleData = {
         title: body.title,
         announce: body.announce,
@@ -48,9 +52,11 @@ articlesRouter.post(`/add`,
       try {
         await api.createArticle(articleData);
         res.redirect(`/my`);
-      } catch (error) {
-        logger.error(`An error article create: ${error.message}`);
-        res.redirect(`back`);
+      } catch (errors) {
+        const validationMessages = prepareErrors(errors);
+        const categories = await getAddArticleData();
+        logger.error(`An error article create: ${validationMessages}`);
+        res.render(`article/new-article`, {categories, validationMessages});
       }
     }
 );

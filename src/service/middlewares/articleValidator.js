@@ -18,12 +18,13 @@ const ErrorArticleMessage = {
 const schema = Joi.object({
   // Заголовок. Обязательное поле. Минимум 30 символов. Максимум 250;
   title: Joi.string().min(30).max(250).required().messages({
+    'string.empty': ErrorArticleMessage.TITLE_MIN,
     'string.min': ErrorArticleMessage.TITLE_MIN,
     'string.max': ErrorArticleMessage.TITLE_MAX
   }),
   // Фотография. Необязательное поле. Позволяет загружать изображения в формате jpg и png;
-  picture: Joi.string().pattern(/\.(jpe?g|png)$/i).messages({
-    'string.pattern': ErrorArticleMessage.PICTURE
+  picture: Joi.string().allow(null, ``).pattern(/\.(jpe?g|png)$/i).messages({
+    'string.pattern.base': ErrorArticleMessage.PICTURE
   }),
   // Категории. Обязательно для выбора одна категория;
   categories: Joi.array().items(
@@ -33,11 +34,12 @@ const schema = Joi.object({
   ).min(1).required(),
   // Анонс публикации. Обязательное поле. Минимум 30 символов. Максимум 250;
   announce: Joi.string().min(30).max(250).required().messages({
+    'string.empty': ErrorArticleMessage.ANNOUNCE_MIN,
     'string.min': ErrorArticleMessage.ANNOUNCE_MIN,
     'string.max': ErrorArticleMessage.ANNOUNCE_MAX
   }),
   // Полный текст публикации. Необязательное поле. Максимум 1000 символов.
-  fullText: Joi.string().max(1000).messages({
+  fullText: Joi.string().allow(null, ``).max(1000).messages({
     'string.max': ErrorArticleMessage.FULL_TEXT_MAX
   })
 });
