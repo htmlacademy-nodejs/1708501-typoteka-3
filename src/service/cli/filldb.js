@@ -3,7 +3,7 @@
 const sequelize = require(`../lib/sequelize`);
 const initDatabase = require(`../lib/init-db`);
 const {getLogger} = require(`../../service/lib/logger`);
-const logger = getLogger({name: `filldb`});
+const passwordUtils = require(`../lib/password`);
 
 const {getRandomInt, shuffle, readContent} = require(`../../utils`);
 const {
@@ -19,10 +19,13 @@ const {
 const {ExitCode} = require(`../constants`);
 const {getRandomPicture} = require(`./helpers`);
 
-const generateComments = (count, comments) =>
+const logger = getLogger({name: `filldb`});
+
+const generateComments = (count, comments, users) =>
   Array(count)
     .fill({})
     .map(() => ({
+      user: users[getRandomInt(0, users.length - 1)].email,
       text: shuffle(comments).slice(0, getRandomInt(1, 3)).join(` `),
     }));
 
@@ -31,11 +34,13 @@ const generateArticles = (
     titles,
     inputCategories,
     sentences,
-    mockComments
+    mockComments,
+    users
 ) => {
   return Array(count)
     .fill({})
     .map(() => {
+      const user = users[getRandomInt(0, users.length - 1)].email;
       const title = titles[getRandomInt(0, titles.length - 1)];
       const announce = shuffle(sentences).slice(0, ANNOUNCE_LENGTH).join(` `);
       const picture = getRandomPicture();
@@ -49,17 +54,18 @@ const generateArticles = (
 
       const comments = generateComments(
           getRandomInt(1, MAX_COMMENTS),
-          mockComments
+          mockComments,
+          users
       );
 
       return {
+        user,
         title,
         announce,
         picture,
         fullText,
         categories,
         comments,
-        userId: 1,
       };
     });
 };
@@ -84,6 +90,23 @@ module.exports = {
     }
     logger.info(`Connection to database established`);
 
+    const users = [
+      {
+        firstName: `Иван`,
+        lastName: `Иванов`,
+        email: `ivanov@example.com`,
+        passwordHash: await passwordUtils.hash(`ivanov`),
+        avatar: `avatar-1.png`,
+      },
+      {
+        firstName: `Пётр`,
+        lastName: `Петров`,
+        email: `petrov@example.com`,
+        passwordHash: await passwordUtils.hash(`petrov`),
+        avatar: `avatar-2.png`,
+      },
+    ];
+
     const [titles, categories, sentences, comments] = await Promise.all([
       readContent(FILE_TITLES_PATH),
       readContent(FILE_CATEGORIES_PATH),
@@ -96,9 +119,10 @@ module.exports = {
         titles,
         categories,
         sentences,
-        comments
+        comments,
+        users
     );
 
-    return initDatabase(sequelize, {articles, categories});
+    return initDatabase(sequelize, {articles, categories, users});
   },
 };

@@ -7,7 +7,7 @@ const {HttpCode} = require(`../constants`);
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
-const routeParamsValidator = require(`../middlewares/routeParams-validator`);
+const routeParamsValidator = require(`../middlewares/route-params-validator`);
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();

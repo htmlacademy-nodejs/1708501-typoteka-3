@@ -13,6 +13,7 @@ const ErrorArticleMessage = {
   ANNOUNCE_MIN: `Описание содержит меньше 30 символов`,
   ANNOUNCE_MAX: `Описание содержит более 250 символов`,
   FULL_TEXT_MAX: `Заголовок не может содержать более 1000 символов`,
+  USER_ID: `Некорректный идентификатор пользователя`
 };
 
 const schema = Joi.object({
@@ -41,6 +42,9 @@ const schema = Joi.object({
   // Полный текст публикации. Необязательное поле. Максимум 1000 символов.
   fullText: Joi.string().allow(null, ``).max(1000).messages({
     'string.max': ErrorArticleMessage.FULL_TEXT_MAX
+  }),
+  userId: Joi.number().integer().positive().required().messages({
+    'number.base': ErrorArticleMessage.USER_ID
   })
 });
 
