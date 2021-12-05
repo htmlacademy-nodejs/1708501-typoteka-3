@@ -143,10 +143,11 @@ describe(`API returns an article with given id`, () => {
 
 describe(`API creates an article if data is valid`, () => {
   const newArticle = {
-    title: `Новый заголовок`,
-    announce: `Новый анонс`,
+    title: `Вот заголовок больше 30 символов`,
+    announce: `А тут у нас анонс более 30 символов`,
     fullText: `Новый текст`,
     categories: [1, 2, 3],
+    picture: `picture.png`
   };
 
   let app;
@@ -173,6 +174,7 @@ describe(`API refuses to create an article if data is invalid`, () => {
     announce: `Новый анонс`,
     fullText: `Новый текст`,
     category: [4, 5, 6],
+    picture: `asd.bmp`
   };
 
   let app;
@@ -195,8 +197,8 @@ describe(`API refuses to create an article if data is invalid`, () => {
 
 describe(`API changes existent article`, () => {
   const newArticle = {
-    title: `Новый заголовок`,
-    announce: `Новый анонс`,
+    title: `Вот новый заголовок больше 30 символов`,
+    announce: `А тут у нас новый анонс более 30 символов`,
     fullText: `Новый текст`,
     categories: [1, 2, 4],
   };
@@ -215,7 +217,7 @@ describe(`API changes existent article`, () => {
   test(`Article is really changed`, () =>
     request(app)
       .get(`/articles/3`)
-      .expect((res) => expect(res.body.title).toBe(`Новый заголовок`)));
+      .expect((res) => expect(res.body.title).toBe(newArticle.title)));
 });
 
 test(`API returns status code 404 when trying to change non-existent article`, async () => {
@@ -228,9 +230,24 @@ test(`API returns status code 404 when trying to change non-existent article`, a
   };
 
   await request(app)
-    .put(`/articles/NOEXST`)
+    .put(`/articles/987345987345987`)
     .send(newArticle)
     .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API returns status code 400 when trying to change not number article`, async () => {
+  const app = await createAPI();
+  const newArticle = {
+    title: `Новый заголовок`,
+    announce: `Новый анонс`,
+    fullText: `Новый текст`,
+    categories: [2, 3, 4]
+  };
+
+  await request(app)
+    .put(`/articles/not_number`)
+    .send(newArticle)
+    .expect(HttpCode.BAD_REQUEST);
 });
 
 test(`API returns status code 400 when trying to change an article with invalid data`, async () => {
@@ -239,7 +256,8 @@ test(`API returns status code 400 when trying to change an article with invalid 
   const invalidArticle = {
     title: `Нет анонса`,
     fullText: `Новый текст`,
-    categories: []
+    categories: [],
+    picture: `asd.bmp`
   };
 
   await request(app)
@@ -270,8 +288,16 @@ test(`API refuses to delete non-existent article`, async () => {
   const app = await createAPI();
 
   await request(app)
-    .delete(`/articles/NOEXST`)
+    .delete(`/articles/123123`)
     .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API refuses to delete article with not number ID`, async () => {
+  const app = await createAPI();
+
+  await request(app)
+    .delete(`/articles/NOEXST`)
+    .expect(HttpCode.BAD_REQUEST);
 });
 
 describe(`API returns a list of comments to given article`, () => {
@@ -292,7 +318,7 @@ describe(`API returns a list of comments to given article`, () => {
 
 describe(`API creates a comment if data is valid`, () => {
   const newComment = {
-    text: `Валидный коммент`,
+    text: `Валидный коммент содержит больше 20 символов`,
   };
 
   let app;
@@ -316,7 +342,9 @@ describe(`API creates a comment if data is valid`, () => {
 });
 
 test(`API refuses to create a comment when data is invalid, and returns status code 400`, async () => {
-  const invalidComment = {};
+  const invalidComment = {
+    text: `Меньше 20 символов`,
+  };
 
   const app = await createAPI();
   await request(app)
@@ -329,11 +357,22 @@ test(`API refuses to create a comment to non-existent article and returns status
   const app = await createAPI();
 
   await request(app)
-    .post(`/articles/NOEXST/comments`)
+    .post(`/articles/12312312/comments`)
     .send({
       text: `Неважно`
     })
     .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API refuses to create a comment to article with not number ID and returns status code 400`, async () => {
+  const app = await createAPI();
+
+  await request(app)
+    .post(`/articles/NOEXST/comments`)
+    .send({
+      text: `Неважно`
+    })
+    .expect(HttpCode.BAD_REQUEST);
 });
 
 describe(`API correctly deletes a comment`, () => {
@@ -360,13 +399,28 @@ test(`API refuses to delete non-existent comment`, async () => {
   const app = await createAPI();
 
   await request(app)
-    .delete(`/articles/2/comments/NOEXST`)
+    .delete(`/articles/2/comments/8671627`)
     .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API refuses to delete comment with not number ID`, async () => {
+  const app = await createAPI();
+
+  await request(app)
+    .delete(`/articles/2/comments/NOEXST`)
+    .expect(HttpCode.BAD_REQUEST);
 });
 
 test(`API refuses to delete a comment to non-existent article`, async () => {
   const app = await createAPI();
   await request(app)
-    .delete(`/offers/NOEXST/comments/s5ye45`)
+    .delete(`/articles/12312312/comments/1`)
     .expect(HttpCode.NOT_FOUND);
+});
+
+test(`API refuses to delete a comment to article with not number ID`, async () => {
+  const app = await createAPI();
+  await request(app)
+    .delete(`/articles/NOEXST/comments/1`)
+    .expect(HttpCode.BAD_REQUEST);
 });

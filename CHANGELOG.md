@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.10.0...v1.11.0) (2021-12-04)
+
+
+### Features
+
+* валидация url параметров ([18bc02e](https://github.com/YoginAlex/1708501-typoteka-3/commit/18bc02e95e1b54a91290fc03de5ff193322e3700))
+* добавил Joi валидацию публикации ([f8b4575](https://github.com/YoginAlex/1708501-typoteka-3/commit/f8b45750b963c7b2015b71bf0c4e0c93ce3142a5))
+* добавил отображение ошибок валидации добавления статьи ([fbb2139](https://github.com/YoginAlex/1708501-typoteka-3/commit/fbb21399b76948532a5b0d8ffd06bdcdefd9980a))
+* доработал редактирование публикации ([4aede7d](https://github.com/YoginAlex/1708501-typoteka-3/commit/4aede7d9bbb76bdf56929b61423b247c080be8cb))
+* поправил тесты под новый валидации ([3507c61](https://github.com/YoginAlex/1708501-typoteka-3/commit/3507c618842d51b4c45ed875390cc2c7d26853f0))
+
+
+### Bug Fixes
+
+* поправил http пробники по новой валидации ([4a4075f](https://github.com/YoginAlex/1708501-typoteka-3/commit/4a4075ff75aebd7399a64c7529e31ab5d4749fc4))
+
 ## [1.10.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.9.0...v1.10.0) (2021-11-29)
 
 

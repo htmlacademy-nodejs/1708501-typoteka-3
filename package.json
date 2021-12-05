@@ -1,6 +1,6 @@
 {
   "name": "1708501-typoteka-3",
-  "version": "1.10.0",
+  "version": "1.11.0",
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
@@ -40,6 +40,7 @@
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "express": "4.17.1",
+    "joi": "17.5.0",
     "multer": "1.4.3",
     "nanoid": "3.1.28",
     "pg": "8.7.1",

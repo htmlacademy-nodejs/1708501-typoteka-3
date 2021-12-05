@@ -7,6 +7,7 @@ const {HttpCode} = require(`../constants`);
 const articleValidator = require(`../middlewares/articleValidator`);
 const articleExist = require(`../middlewares/articleExist`);
 const commentValidator = require(`../middlewares/commentValidator`);
+const routeParamsValidator = require(`../middlewares/routeParamsValidator`);
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -16,8 +17,8 @@ module.exports = (app, articleService, commentService) => {
   // GET /api/articles - ресурс возвращает список публикаций;
   route.get(`/`, async (req, res) => {
     const {offset, limit, comments} = req.query;
-
     let articles;
+
     if (limit || offset) {
       articles = await articleService.findPage({limit, offset});
     } else {
@@ -28,7 +29,7 @@ module.exports = (app, articleService, commentService) => {
   });
 
   // GET /api/articles/:articleId — возвращает полную информацию о публикации;
-  route.get(`/:articleId`, async (req, res) => {
+  route.get(`/:articleId`, routeParamsValidator, async (req, res) => {
     const {articleId} = req.params;
     const article = await articleService.findOne(articleId);
 
@@ -51,8 +52,7 @@ module.exports = (app, articleService, commentService) => {
   // PUT /api/articles/:articleId - редактирует определённую публикацию;
   route.put(
       `/:articleId`,
-      articleExist(articleService),
-      articleValidator,
+      [routeParamsValidator, articleExist(articleService), articleValidator],
       async (req, res) => {
         const {articleId} = req.params;
         const updatedArticle = await articleService.update(articleId, req.body);
@@ -62,21 +62,27 @@ module.exports = (app, articleService, commentService) => {
   );
 
   // DELETE /api/articles/:articleId - удаляет определённую публикацию;
-  route.delete(`/:articleId`, articleExist(articleService), async (req, res) => {
-    const {articleId} = req.params;
-    const deletedArticle = await articleService.drop(articleId);
+  route.delete(
+      `/:articleId`,
+      [routeParamsValidator, articleExist(articleService)],
+      async (req, res) => {
+        const {articleId} = req.params;
+        const deletedArticle = await articleService.drop(articleId);
 
-    if (!deletedArticle) {
-      return res.status(HttpCode.NOT_FOUND).send(`Not found with ${articleId}`);
-    }
+        if (!deletedArticle) {
+          return res
+          .status(HttpCode.NOT_FOUND)
+          .send(`Not found with ${articleId}`);
+        }
 
-    return res.status(HttpCode.OK).json(deletedArticle);
-  });
+        return res.status(HttpCode.OK).json(deletedArticle);
+      }
+  );
 
   // GET /api/articles/:articleId/comments — возвращает список комментариев определённой публикации;
   route.get(
       `/:articleId/comments`,
-      articleExist(articleService),
+      [routeParamsValidator, articleExist(articleService)],
       async (req, res) => {
         const {articleId} = req.params;
         const comments = await commentService.findAll(articleId);
@@ -94,8 +100,7 @@ module.exports = (app, articleService, commentService) => {
   // POST /api/articles/:articleId/comments — создаёт новый комментарий;
   route.post(
       `/:articleId/comments`,
-      articleExist(articleService),
-      commentValidator,
+      [routeParamsValidator, articleExist(articleService), commentValidator],
       async (req, res) => {
         const {articleId} = req.params;
         const comment = await commentService.create(articleId, req.body);
@@ -107,7 +112,7 @@ module.exports = (app, articleService, commentService) => {
   // DELETE /api/articles/:articleId/comments/:commentId — удаляет из определённой публикации комментарий с идентификатором;
   route.delete(
       `/:articleId/comments/:commentId`,
-      articleExist(articleService),
+      [routeParamsValidator, articleExist(articleService)],
       async (req, res) => {
         const {commentId} = req.params;
         const deleted = await commentService.drop(commentId);
