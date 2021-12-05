@@ -5,6 +5,7 @@ const request = require(`supertest`);
 const Sequelize = require(`sequelize`);
 
 const initDB = require(`../lib/init-db`);
+const passwordUtils = require(`../lib/password`);
 const category = require(`./category`);
 const DataService = require(`../data-service/category`);
 const {HttpCode} = require(`../constants`);
@@ -23,6 +24,7 @@ const mockCategories = [
 
 const mockData = [
   {
+    user: `ivanov@example.com`,
     title: `Как перестать беспокоиться и начать жить`,
     createdAt: `2021-08-09T03:56:17.025Z`,
     announce: `Ёлки — это не просто красивое дерево. Это прочная древесина. Достичь успеха помогут ежедневные повторения. Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами. Это один из лучших рок-музыкантов. Золотое сечение — соотношение двух величин, гармоническая пропорция.`,
@@ -30,17 +32,21 @@ const mockData = [
     categories: [`Кино`, `Программирование`, `Без рамки`, `IT`, `Деревья`],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Планируете записать видосик на эту тему? Совсем немного... Мне кажется или я уже читал это где-то?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Мне кажется или я уже читал это где-то? Это где ж такие красоты?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Хочу такую же футболку :-) Совсем немного... Планируете записать видосик на эту тему?`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Ёлки. История деревьев`,
     createdAt: `2021-08-09T03:56:17.025Z`,
     announce: `Из под его пера вышло 8 платиновых альбомов. Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Достичь успеха помогут ежедневные повторения. Вы можете достичь всего. Стоит только немного постараться и запастись книгами. Как начать действовать? Для начала просто соберитесь.`,
@@ -48,17 +54,21 @@ const mockData = [
     categories: [`За жизнь`, `Деревья`, `Железо`, `Музыка`],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Это где ж такие красоты?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете. Это где ж такие красоты?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Согласен с автором!`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Самый лучший музыкальный альбом этого года`,
     createdAt: `2021-08-09T03:56:17.025Z`,
     announce: `Первая большая ёлка была установлена только в 1938 году. Помните, небольшое количество ежедневных упражнений лучше, чем один раз, но много. Программировать не настолько сложно, как об этом говорят. Он написал больше 30 хитов. Ёлки — это не просто красивое дерево. Это прочная древесина.`,
@@ -66,12 +76,15 @@ const mockData = [
     categories: [`Без рамки`, `IT`, `За жизнь`, `Железо`, `Разное`],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Планируете записать видосик на эту тему? Совсем немного...`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете.`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Совсем немного... Согласен с автором!`,
       },
     ],
@@ -84,7 +97,24 @@ const app = express();
 app.use(express.json());
 
 beforeAll(async () => {
-  await initDB(mockDB, {categories: mockCategories, articles: mockData});
+  const users = [
+    {
+      firstName: `Иван`,
+      lastName: `Иванов`,
+      email: `ivanov@example.com`,
+      passwordHash: await passwordUtils.hash(`ivanov`),
+      avatar: `avatar-1.png`,
+    },
+    {
+      firstName: `Пётр`,
+      lastName: `Петров`,
+      email: `petrov@example.com`,
+      passwordHash: await passwordUtils.hash(`petrov`),
+      avatar: `avatar-2.png`,
+    },
+  ];
+
+  await initDB(mockDB, {categories: mockCategories, articles: mockData, users});
   category(app, new DataService(mockDB));
 });
 

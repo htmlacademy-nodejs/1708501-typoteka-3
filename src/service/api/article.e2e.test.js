@@ -5,6 +5,7 @@ const request = require(`supertest`);
 const Sequelize = require(`sequelize`);
 
 const initDB = require(`../lib/init-db`);
+const passwordUtils = require(`../lib/password`);
 const article = require(`./article`);
 const DataService = require(`../data-service/article`);
 const CommentService = require(`../data-service/comment`);
@@ -24,6 +25,7 @@ const mockCategories = [
 
 const mockData = [
   {
+    user: `ivanov@example.com`,
     title: `111Как перестать беспокоиться и начать жить`,
     createdAt: `2021-09-11T17:27:00.915Z`,
     announce: `Первая большая ёлка была установлена только в 1938 году. Бороться с прокрастинацией несложно. Просто действуйте. Маленькими шагами. Золотое сечение — соотношение двух величин, гармоническая пропорция. Простые ежедневные упражнения помогут достичь успеха. Он написал больше 30 хитов.`,
@@ -39,11 +41,13 @@ const mockData = [
     ],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Это где ж такие красоты?`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Обзор новейшего смартфона!`,
     createdAt: `2021-08-06T11:30:00.195Z`,
     announce: `Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Вы можете достичь всего. Стоит только немного постараться и запастись книгами. Помните, небольшое количество ежедневных упражнений лучше, чем один раз, но много. Процессор заслуживает особого внимания. Он обязательно понравится геймерам со стажем. Первая большая ёлка была установлена только в 1938 году.`,
@@ -51,14 +55,17 @@ const mockData = [
     categories: [`Без рамки`, `Железо`, `IT`, `Музыка`, `Кино`, `Деревья`],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете. Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Плюсую, но слишком много буквы! Это где ж такие красоты? Планируете записать видосик на эту тему?`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Самый лучший музыкальный альбом этого года`,
     createdAt: `2021-09-09T09:59:59.079Z`,
     announce: `Достичь успеха помогут ежедневные повторения. Из под его пера вышло 8 платиновых альбомов. Это один из лучших рок-музыкантов. Этот смартфон — настоящая находка. Большой и яркий экран, мощнейший процессор — всё это в небольшом гаджете. Золотое сечение — соотношение двух величин, гармоническая пропорция.`,
@@ -74,11 +81,13 @@ const mockData = [
     ],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Согласен с автором!`,
       },
     ],
   },
   {
+    user: `ivanov@example.com`,
     title: `Как перестать беспокоиться и начать жить`,
     createdAt: `2021-08-31T10:19:18.298Z`,
     announce: `Помните, небольшое количество ежедневных упражнений лучше, чем один раз, но много. Простые ежедневные упражнения помогут достичь успеха. Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Первая большая ёлка была установлена только в 1938 году. Из под его пера вышло 8 платиновых альбомов.`,
@@ -86,12 +95,15 @@ const mockData = [
     categories: [`Программирование`, `За жизнь`, `IT`, `Без рамки`],
     comments: [
       {
+        user: `ivanov@example.com`,
         text: `Плюсую, но слишком много буквы! Планируете записать видосик на эту тему?`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Совсем немного... Согласен с автором!`,
       },
       {
+        user: `ivanov@example.com`,
         text: `Согласен с автором!`,
       },
     ],
@@ -99,8 +111,25 @@ const mockData = [
 ];
 
 const createAPI = async () => {
+  const users = [
+    {
+      firstName: `Иван`,
+      lastName: `Иванов`,
+      email: `ivanov@example.com`,
+      passwordHash: await passwordUtils.hash(`ivanov`),
+      avatar: `avatar-1.png`,
+    },
+    {
+      firstName: `Пётр`,
+      lastName: `Петров`,
+      email: `petrov@example.com`,
+      passwordHash: await passwordUtils.hash(`petrov`),
+      avatar: `avatar-2.png`,
+    },
+  ];
+
   const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
-  await initDB(mockDB, {categories: mockCategories, articles: mockData});
+  await initDB(mockDB, {categories: mockCategories, articles: mockData, users});
 
   const app = express();
   app.use(express.json());
@@ -143,6 +172,7 @@ describe(`API returns an article with given id`, () => {
 
 describe(`API creates an article if data is valid`, () => {
   const newArticle = {
+    userId: 1,
     title: `Вот заголовок больше 30 символов`,
     announce: `А тут у нас анонс более 30 символов`,
     fullText: `Новый текст`,
@@ -170,6 +200,7 @@ describe(`API creates an article if data is valid`, () => {
 
 describe(`API refuses to create an article if data is invalid`, () => {
   const newArticle = {
+    userId: 1,
     title: `Новый заголовок`,
     announce: `Новый анонс`,
     fullText: `Новый текст`,
@@ -197,6 +228,7 @@ describe(`API refuses to create an article if data is invalid`, () => {
 
 describe(`API changes existent article`, () => {
   const newArticle = {
+    userId: 1,
     title: `Вот новый заголовок больше 30 символов`,
     announce: `А тут у нас новый анонс более 30 символов`,
     fullText: `Новый текст`,
@@ -223,6 +255,7 @@ describe(`API changes existent article`, () => {
 test(`API returns status code 404 when trying to change non-existent article`, async () => {
   const app = await createAPI();
   const newArticle = {
+    userId: 1,
     title: `Новый заголовок`,
     announce: `Новый анонс`,
     fullText: `Новый текст`,
@@ -238,6 +271,7 @@ test(`API returns status code 404 when trying to change non-existent article`, a
 test(`API returns status code 400 when trying to change not number article`, async () => {
   const app = await createAPI();
   const newArticle = {
+    userId: 1,
     title: `Новый заголовок`,
     announce: `Новый анонс`,
     fullText: `Новый текст`,
@@ -254,6 +288,7 @@ test(`API returns status code 400 when trying to change an article with invalid 
   const app = await createAPI();
 
   const invalidArticle = {
+    user: null,
     title: `Нет анонса`,
     fullText: `Новый текст`,
     categories: [],
@@ -318,6 +353,7 @@ describe(`API returns a list of comments to given article`, () => {
 
 describe(`API creates a comment if data is valid`, () => {
   const newComment = {
+    userId: 1,
     text: `Валидный коммент содержит больше 20 символов`,
   };
 
@@ -343,6 +379,7 @@ describe(`API creates a comment if data is valid`, () => {
 
 test(`API refuses to create a comment when data is invalid, and returns status code 400`, async () => {
   const invalidComment = {
+    user: null,
     text: `Меньше 20 символов`,
   };
 
