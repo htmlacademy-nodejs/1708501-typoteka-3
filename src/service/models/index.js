@@ -36,12 +36,11 @@ const define = (sequelize) => {
   });
   Category.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
 
-  // TODO: проработать связи с таблицей пользователей
-  // и заполнять таблицу пользователе при filldb
-  // Comment.belongsTo(User, {foreignKey: `userId`});
-  // Article.belongsTo(User, {foreignKey: `userId`});
-  // User.hasMany(Comment, {as: Alias.COMMENTS, foreignKey: `userId`});
-  // User.hasMany(Article, {as: Alias.ARTICLES, foreignKey: `userId`});
+  User.hasMany(Article, {as: Alias.ARTICLES, foreignKey: `userId`});
+  Article.belongsTo(User, {as: Alias.USER, foreignKey: `userId`});
+
+  User.hasMany(Comment, {as: Alias.COMMENTS, foreignKey: `userId`});
+  Comment.belongsTo(User, {as: Alias.USER, foreignKey: `userId`});
 
   return {Category, Comment, Article, ArticleCategory, User};
 };

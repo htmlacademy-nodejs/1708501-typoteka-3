@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.11.0...v1.12.0) (2021-12-05)
+
+
+### Features
+
+* добавил модаль пользователя и выборку пользователей ([3f6188d](https://github.com/YoginAlex/1708501-typoteka-3/commit/3f6188df07f9513ebb341515791b1549b74a021f))
+* добавил пользователей в заполнение BD ([cb8c9f5](https://github.com/YoginAlex/1708501-typoteka-3/commit/cb8c9f54d83543ecc818c4f18edec10b03480102))
+* добавил регистрацию пользователя ([3781d25](https://github.com/YoginAlex/1708501-typoteka-3/commit/3781d25f35b02eb4739f3cd53927360d53617043))
+* поправил и добавил тесты ([6719f54](https://github.com/YoginAlex/1708501-typoteka-3/commit/6719f547a7651bdf1e9bbb3df18b2eef6ae64680))
+
+
+### Bug Fixes
+
+* camelCase to kebab-case for files ([8a2e624](https://github.com/YoginAlex/1708501-typoteka-3/commit/8a2e6248899bc0faf9f61de6555b427ffbd593fa))
+
 ## [1.11.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.10.0...v1.11.0) (2021-12-04)
 
 

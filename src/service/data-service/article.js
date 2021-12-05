@@ -7,6 +7,15 @@ class ArticleService {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
+    this._User = sequelize.models.User;
+
+    this._includeUser = {
+      model: this._User,
+      as: Alias.USER,
+      attributes: {
+        exclude: [`passwordHash`],
+      },
+    };
   }
 
   async create(data) {
@@ -25,8 +34,13 @@ class ArticleService {
     const include = [Alias.CATEGORIES];
 
     if (needComments) {
-      include.push(Alias.COMMENTS);
+      include.push({
+        model: this._Comment,
+        as: Alias.COMMENTS,
+        include: [Alias.USER],
+      });
     }
+
     const articles = await this._Article.findAll({
       include,
       order: [[`createdAt`, `DESC`]],
@@ -36,7 +50,9 @@ class ArticleService {
   }
 
   async findOne(id) {
-    return this._Article.findByPk(id, {include: [Alias.CATEGORIES, Alias.COMMENTS]});
+    return this._Article.findByPk(id, {
+      include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
+    });
   }
 
   async update(id, article) {
@@ -50,11 +66,9 @@ class ArticleService {
     const {count, rows} = await this._Article.findAndCountAll({
       limit,
       offset,
-      include: [Alias.CATEGORIES, Alias.COMMENTS],
-      order: [
-        [`createdAt`, `DESC`]
-      ],
-      distinct: true
+      include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
+      order: [[`createdAt`, `DESC`]],
+      distinct: true,
     });
     return {count, articles: rows};
   }

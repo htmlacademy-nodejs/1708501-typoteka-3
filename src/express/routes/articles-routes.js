@@ -1,21 +1,14 @@
 'use strict';
 
-
-const path = require(`path`);
-const multer = require(`multer`);
-const {nanoid} = require(`nanoid`);
 const {Router} = require(`express`);
 
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
+const upload = require(`../../service/middlewares/upload`);
 const {prepareErrors} = require(`../../utils`);
 
 const logger = getLogger({name: `api`});
 const articlesRouter = new Router();
-
-const UPLOAD_DIR = `../upload/img/`;
-
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const getAddArticleData = () => {
   return api.getCategories();
@@ -29,16 +22,6 @@ const getEditArticleData = async (articleId) => {
   return [article, categories];
 };
 
-const storage = multer.diskStorage({
-  destination: uploadDirAbsolute,
-  filename: (req, file, cb) => {
-    const uniqueName = nanoid(10);
-    const extension = file.originalname.split(`.`).pop();
-    cb(null, `${uniqueName}.${extension}`);
-  }
-});
-const upload = multer({storage});
-
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles-by-category`));
 
 articlesRouter.get(`/add`, async (req, res) => {
@@ -50,6 +33,7 @@ articlesRouter.post(`/add`,
     upload.single(`uploadPicture`),
     async ({body, file}, res) => {
       const articleData = {
+        userId: body.userId,
         title: body.title,
         announce: body.announce,
         fullText: body.fullText,
@@ -80,6 +64,7 @@ articlesRouter.post(`/edit/:id`, upload.single(`uploadPicture`), async (req, res
   const {id} = req.params;
 
   const articleData = {
+    userId: body.userId,
     title: body.title,
     announce: body.announce,
     fullText: body.fullText,

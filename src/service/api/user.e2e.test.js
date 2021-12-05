@@ -6,8 +6,8 @@ const Sequelize = require(`sequelize`);
 
 const initDB = require(`../lib/init-db`);
 const passwordUtils = require(`../lib/password`);
-const search = require(`./search`);
-const DataService = require(`../data-service/search`);
+const user = require(`./user`);
+const DataService = require(`../data-service/user`);
 const {HttpCode} = require(`../constants`);
 
 const mockCategories = [
@@ -71,12 +71,7 @@ const mockData = [
   },
 ];
 
-const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
-
-const app = express();
-app.use(express.json());
-
-beforeAll(async () => {
+const createAPI = async () => {
   const users = [
     {
       firstName: `Иван`,
@@ -94,32 +89,104 @@ beforeAll(async () => {
     },
   ];
 
+  const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
   await initDB(mockDB, {categories: mockCategories, articles: mockData, users});
-  search(app, new DataService(mockDB));
-});
 
-describe(`API returns article based on search query`, () => {
+  const app = express();
+  app.use(express.json());
+
+  user(app, new DataService(mockDB));
+  return app;
+};
+
+describe(`API creates user if data is valid`, () => {
+  const validUserData = {
+    firstName: `Сидор`,
+    lastName: `Сидоров`,
+    email: `sidorov@example.com`,
+    password: `sidorov`,
+    passwordRepeated: `sidorov`,
+    avatar: `avatar-5.png`
+  };
+
   let response;
 
   beforeAll(async () => {
-    response = await request(app).get(`/search`).query({
-      query: `Учим HTML и CSS`,
-    });
+    let app = await createAPI();
+    response = await request(app)
+      .post(`/user`)
+      .send(validUserData);
   });
 
-  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
-  test(`1 article found`, () => expect(response.body.length).toBe(1));
-  test(`Article has correct title`, () =>
-    expect(response.body[0].title).toBe(`Учим HTML и CSS`));
+  test(`Status code 201`, () => expect(response.statusCode).toBe(HttpCode.CREATED));
 });
 
-test(`API returns code 404 if nothing is found`, () =>
-  request(app)
-    .get(`/search`)
-    .query({
-      query: `Продам свою душу`,
-    })
-    .expect(HttpCode.NOT_FOUND));
+describe(`API refuses to create user if data is invalid`, () => {
+  const validUserData = {
+    firstName: `Сидор`,
+    lastName: `Сидоров`,
+    email: `sidorov@example.com`,
+    password: `sidorov`,
+    passwordRepeated: `sidorov`,
+    avatar: `avatar-5.png`
+  };
 
-test(`API returns 400 when query string is absent`, () =>
-  request(app).get(`/search`).expect(HttpCode.BAD_REQUEST));
+  let app;
+
+  beforeAll(async () => {
+    app = await createAPI();
+  });
+
+  test(`Without any required property response code is 400`, async () => {
+    for (const key of Object.keys(validUserData)) {
+      const badUserData = {...validUserData};
+      delete badUserData[key];
+      await request(app)
+        .post(`/user`)
+        .send(badUserData)
+        .expect(HttpCode.BAD_REQUEST);
+    }
+  });
+
+  test(`When field type is wrong response code is 400`, async () => {
+    const badUsers = [
+      {...validUserData, firstName: true},
+      {...validUserData, email: 1}
+    ];
+    for (const badUserData of badUsers) {
+      await request(app)
+        .post(`/user`)
+        .send(badUserData)
+        .expect(HttpCode.BAD_REQUEST);
+    }
+  });
+
+  test(`When field value is wrong response code is 400`, async () => {
+    const badUsers = [
+      {...validUserData, password: `short`, passwordRepeated: `short`},
+      {...validUserData, email: `invalid`}
+    ];
+    for (const badUserData of badUsers) {
+      await request(app)
+        .post(`/user`)
+        .send(badUserData)
+        .expect(HttpCode.BAD_REQUEST);
+    }
+  });
+
+  test(`When password and passwordRepeated are not equal, code is 400`, async () => {
+    const badUserData = {...validUserData, passwordRepeated: `not sidorov`};
+    await request(app)
+      .post(`/user`)
+      .send(badUserData)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+
+  test(`When email is already in use status code is 400`, async () => {
+    const badUserData = {...validUserData, email: `ivanov@example.com`};
+    await request(app)
+      .post(`/user`)
+      .send(badUserData)
+      .expect(HttpCode.BAD_REQUEST);
+  });
+});

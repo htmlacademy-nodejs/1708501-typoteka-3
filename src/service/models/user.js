@@ -28,7 +28,7 @@ const define = (sequelize) =>
       {
         sequelize,
         modelName: `User`,
-        tableName: `users`
+        tableName: `users`,
       }
   );
 

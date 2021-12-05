@@ -2,9 +2,13 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
+const {getLogger} = require(`../../service/lib/logger`);
+const upload = require(`../../service/middlewares/upload`);
+const {prepareErrors} = require(`../../utils`);
 
 const OFFERS_PER_PAGE = 8;
 
+const logger = getLogger({name: `api`});
 const mainRouter = new Router();
 
 mainRouter.get(`/`, async (req, res) => {
@@ -38,7 +42,32 @@ mainRouter.get(`/search`, async (req, res) => {
   }
 });
 
-mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
+mainRouter.get(`/register`, (req, res) => {
+  res.render(`sign-up`);
+});
+
+mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
+  const {body, file} = req;
+
+  const userData = {
+    avatar: file ? file.filename : ``,
+    firstName: body.firstName,
+    lastName: body.lastName,
+    email: body.email,
+    password: body.password,
+    passwordRepeated: body[`repeat-password`]
+  };
+
+  try {
+    await api.createUser({data: userData});
+    res.redirect(`/login`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    logger.error(`An error user registration: ${validationMessages}`);
+    res.render(`sign-up`, {validationMessages});
+  }
+});
+
 mainRouter.get(`/login`, (req, res) => res.render(`login`));
 mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`));
 
