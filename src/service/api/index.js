@@ -10,12 +10,13 @@ const {
   SearchService,
   ArticleService,
   CommentService,
+  UserService
 } = require(`../data-service`);
 
 const category = require(`./category`);
 const article = require(`./article`);
 const search = require(`./search`);
-
+const user = require(`../api/user`);
 
 module.exports = async () => {
   defineModels(sequelize);
@@ -24,6 +25,7 @@ module.exports = async () => {
   category(app, new CategoryService(sequelize));
   search(app, new SearchService(sequelize));
   article(app, new ArticleService(sequelize), new CommentService(sequelize));
+  user(app, new UserService(sequelize));
 
   return app;
 };

@@ -7,8 +7,12 @@ const myRouter = new Router();
 const api = require(`../api`).getAPI();
 
 myRouter.get(`/`, async (req, res) => {
-  const articles = await api.getArticles();
-  res.render(`admin/my`, {articles});
+  const [articles, categories] = await Promise.all([
+    api.getArticles({comments: true}),
+    api.getCategories(true)
+  ]);
+
+  res.render(`admin/my`, {articles, categories});
 });
 
 myRouter.get(`/comments`, async (req, res) => {

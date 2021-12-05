@@ -18,7 +18,6 @@ class ArticleService {
     };
   }
 
-
   async create(data) {
     const article = await this._Article.create(data);
     await article.addCategories(data.categories);
@@ -32,19 +31,16 @@ class ArticleService {
   }
 
   async findAll(needComments) {
-    const include = [
-      Alias.CATEGORIES, this._includeUser,
-    ];
+    const include = [Alias.CATEGORIES];
 
     if (needComments) {
       include.push({
         model: this._Comment,
         as: Alias.COMMENTS,
-        include: [
-          this._includeUser
-        ],
+        include: [Alias.USER],
       });
     }
+
     const articles = await this._Article.findAll({
       include,
       order: [[`createdAt`, `DESC`]],
