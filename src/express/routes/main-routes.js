@@ -12,6 +12,7 @@ const logger = getLogger({name: `api`});
 const mainRouter = new Router();
 
 mainRouter.get(`/`, async (req, res) => {
+  const {user} = req.session;
   let {page = 1} = req.query;
   page = +page;
 
@@ -24,7 +25,7 @@ mainRouter.get(`/`, async (req, res) => {
   ]);
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
 
-  res.render(`main`, {articles, page, totalPages, categories});
+  res.render(`main`, {articles, page, totalPages, categories, user});
 });
 
 mainRouter.get(`/search`, async (req, res) => {
@@ -66,6 +67,12 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     logger.error(`An error user registration: ${validationMessages}`);
     res.render(`sign-up`, {validationMessages});
   }
+});
+
+mainRouter.get(`/login`, (req, res) => {
+  const {user} = req.session;
+
+  res.render(`login`, {user});
 });
 
 mainRouter.post(`/login`, async (req, res) => {

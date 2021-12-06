@@ -11,7 +11,7 @@ block content
         h2.popup__title Войти
         .popup__form.form.form--log-in
 
-        +insertErrorMessage(validationMessages)
+          +insertErrorMessage(validationMessages)
 
           form(action="/login" method="post")
             .form__field
