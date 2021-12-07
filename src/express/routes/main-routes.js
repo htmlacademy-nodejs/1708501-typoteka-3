@@ -29,12 +29,14 @@ mainRouter.get(`/`, async (req, res) => {
 });
 
 mainRouter.get(`/search`, async (req, res) => {
+  const {user} = req.session;
+
   try {
     const {query} = req.query;
     const results = await api.search(query);
 
     res.render(`search`, {
-      results
+      results, user
     });
   } catch (error) {
     res.render(`search`, {
