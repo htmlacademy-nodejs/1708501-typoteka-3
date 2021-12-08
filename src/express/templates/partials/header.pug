@@ -14,10 +14,22 @@ header.header
         a(href='main.html') Пункт меню
       li.navigation__item
         a(href='main.html') Пункт меню
+
   nav.header__nav
-    ul.header__nav-list
-      li.header__list-item
-        a.header__popup(href='#') Регистрация
-      li.header__list-item
-        a.header__enter(href='#') Вход с паролем
-  a.header__search.button.button--search(href='#' aria-label='поиск по сайту')
+    if user
+      ul.header__nav-list
+        li.header__list-item
+          p #{user.firstName} #{user.lastName}
+        li.header__list-item
+          a.header__exit(href='/logout') Выйти
+    else
+      ul.header__nav-list
+        li.header__list-item
+          a.header__popup(href='/register') Регистрация
+        li.header__list-item
+          a.header__enter(href='/login') Вход с паролем
+  if user
+    a.header__avatar.avatar
+      img(src=`${user.avatar}` alt='аватар пользователя')
+
+  a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')

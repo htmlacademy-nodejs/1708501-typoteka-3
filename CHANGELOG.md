@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.12.0...v1.13.0) (2021-12-07)
+
+
+### Features
+
+* аутентификация, фронт и тесты для неё ([98e5757](https://github.com/YoginAlex/1708501-typoteka-3/commit/98e575725f88553958a41a935851d0b81158925e))
+* добавил csrf защиту форм ([a601d15](https://github.com/YoginAlex/1708501-typoteka-3/commit/a601d15e236b78cb44b924dc7518c26351b6d17b))
+* закрыл страницы под авторизацию ([198468c](https://github.com/YoginAlex/1708501-typoteka-3/commit/198468cea333012b39c89502d48637ad94ecb16c))
+* отображение пользователя в шапке ([e94f34f](https://github.com/YoginAlex/1708501-typoteka-3/commit/e94f34fe14e17e4cb39a1ea80dbcf1061ed4ad4f))
+
 ## [1.12.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.11.0...v1.12.0) (2021-12-05)
 
 
