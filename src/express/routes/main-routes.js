@@ -7,6 +7,7 @@ const upload = require(`../../service/middlewares/upload`);
 const {prepareErrors} = require(`../../utils`);
 
 const OFFERS_PER_PAGE = 8;
+const MOST_COMMENTED_ARTICLES_LIMIT = 8;
 
 const logger = getLogger({name: `api`});
 const mainRouter = new Router();
@@ -19,13 +20,14 @@ mainRouter.get(`/`, async (req, res) => {
   const limit = OFFERS_PER_PAGE;
   const offset = (page - 1) * OFFERS_PER_PAGE;
 
-  const [{count, articles}, categories, comments] = await Promise.all([
+  const [{count, articles}, mostCommentedArticles, categories, comments] = await Promise.all([
     api.getArticles({limit, offset, comments: true}),
+    api.getArticles({limit: MOST_COMMENTED_ARTICLES_LIMIT, orderByComments: true}),
     api.getCategories(true),
     api.getLastComments(10),
   ]);
   const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-  res.render(`main`, {articles, comments, page, totalPages, categories, user});
+  res.render(`main`, {articles, mostCommentedArticles, comments, page, totalPages, categories, user});
 });
 
 mainRouter.get(`/search`, async (req, res) => {
