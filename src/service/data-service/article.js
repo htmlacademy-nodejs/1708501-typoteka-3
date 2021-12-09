@@ -1,10 +1,10 @@
 "use strict";
 
-const Sequelize = require(`sequelize`);
 const Alias = require(`../models/alias`);
 
 class ArticleService {
   constructor(sequelize) {
+    this._sequelize = sequelize;
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
@@ -77,7 +77,11 @@ class ArticleService {
   async getMostCommentedArticles({limit}) {
     const result = await this._Article.findAll({
       limit,
-      attributes: [`id`, `announce`, [Sequelize.fn(`COUNT`, `*`), `count`]],
+      attributes: {
+        include: [
+          [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `commentsCount`]
+        ]
+      },
       include: [{
         model: this._Comment,
         as: Alias.COMMENTS,
@@ -85,7 +89,7 @@ class ArticleService {
       }],
       group: [`Article.id`],
       order: [
-        [Sequelize.literal(`count`), `DESC`],
+        [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `DESC`]
       ],
       subQuery: false
     });
