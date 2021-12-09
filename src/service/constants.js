@@ -11,6 +11,8 @@ const DEFAULT_COMMAND = `--help`;
 
 const USER_ARGV_INDEX = 2;
 
+const DEFAULT_COMMENTS_LIMIT = 10;
+
 const ExitCode = {
   success: 0,
   uncaughtFatalException: 1,
@@ -46,6 +48,7 @@ module.exports = {
   MOCK_FILE_PATH,
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
+  DEFAULT_COMMENTS_LIMIT,
   HttpCode,
   HttpMethod,
   ExitCode,

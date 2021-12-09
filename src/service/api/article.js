@@ -28,6 +28,12 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.OK).json(articles);
   });
 
+  route.get(`/comments`, async (req, res) => {
+    const {limit} = req.query;
+    const result = await commentService.getLastComments(limit);
+    res.status(HttpCode.OK).json(result);
+  });
+
   // GET /api/articles/:articleId — возвращает полную информацию о публикации;
   route.get(`/:articleId`, routeParamsValidator, async (req, res) => {
     const {articleId} = req.params;

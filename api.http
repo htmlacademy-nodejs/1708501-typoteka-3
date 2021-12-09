@@ -31,6 +31,9 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/api/articles/comments?limit=10
+
+###
 # PUT /api/articles/:articleId — редактирует определённую публикацию;
 PUT http://localhost:3000/api/articles/13
 Content-Type: application/json

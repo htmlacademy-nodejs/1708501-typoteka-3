@@ -461,3 +461,22 @@ test(`API refuses to delete a comment to article with not number ID`, async () =
     .delete(`/articles/NOEXST/comments/1`)
     .expect(HttpCode.BAD_REQUEST);
 });
+
+describe(`API returns a list of last N comments`, () => {
+  let app;
+  let response;
+  const LIMIT = 7;
+
+  beforeAll(async () => {
+    app = await createAPI();
+    response = await request(app).get(`/articles/comments?limit=${LIMIT}`);
+  });
+
+  test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
+  test(`Returns a list of 7 articles`, () =>
+    expect(response.body.length).toBe(LIMIT));
+  test(`First comment equals "Плюсую, но слишком много буквы! Планируете записать видосик на эту тему?"`, () =>
+    expect(response.body[0].text).toBe(
+        `Плюсую, но слишком много буквы! Планируете записать видосик на эту тему?`
+    ));
+});

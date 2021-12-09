@@ -32,6 +32,10 @@ class API {
     return this._load(`/categories`, {params: {count}});
   }
 
+  getLastComments(limit) {
+    return this._load(`/articles/comments`, {params: {limit}});
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
