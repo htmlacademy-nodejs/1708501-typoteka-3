@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.13.0...v1.14.0) (2021-12-09)
+
+
+### Features
+
+* добавил одновременный запуск с concurrently ([be921bd](https://github.com/YoginAlex/1708501-typoteka-3/commit/be921bda9a09cdfc48102b6550e50e50dbfdb145))
+
 ## [1.13.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.12.0...v1.13.0) (2021-12-07)
 
 
