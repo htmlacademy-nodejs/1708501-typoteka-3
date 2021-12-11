@@ -108,7 +108,6 @@ class ArticleService {
     }
 
     const {count, rows} = await this._Article.findAndCountAll(queryModel);
-
     return {count, articles: rows};
   }
 
