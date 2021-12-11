@@ -12,6 +12,7 @@ const DEFAULT_COMMAND = `--help`;
 const USER_ARGV_INDEX = 2;
 
 const DEFAULT_COMMENTS_LIMIT = 10;
+const ARTICLES_PER_PAGE = 8;
 
 const ExitCode = {
   success: 0,
@@ -49,6 +50,7 @@ module.exports = {
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
   DEFAULT_COMMENTS_LIMIT,
+  ARTICLES_PER_PAGE,
   HttpCode,
   HttpMethod,
   ExitCode,

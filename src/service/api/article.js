@@ -16,11 +16,11 @@ module.exports = (app, articleService, commentService) => {
 
   // GET /api/articles - ресурс возвращает список публикаций;
   route.get(`/`, async (req, res) => {
-    const {offset, limit, comments, orderByComments} = req.query;
+    const {categoryId, offset, limit, comments, orderByComments} = req.query;
     let articles;
 
     if (limit || offset) {
-      articles = await articleService.findPage({limit, offset, orderByComments});
+      articles = await articleService.findPage({categoryId, limit, offset});
     } else {
       articles = await articleService.findAll(comments === `true`);
     }

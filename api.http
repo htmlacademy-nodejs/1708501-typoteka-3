@@ -6,6 +6,10 @@ GET http://localhost:3000/api/articles
 GET http://localhost:3000/api/articles?comments=true
 
 ###
+# GET /api/articles — ресурс возвращает список публикаций с по категории;
+GET http://localhost:3000/api/articles?categoryId=2&limit=2
+
+###
 # GET /api/articles/:articleId — возвращает полную информацию о публикации;
 GET http://localhost:3000/api/articles/1
 

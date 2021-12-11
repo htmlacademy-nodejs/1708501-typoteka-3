@@ -8,6 +8,7 @@ class ArticleService {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
+    this._ArticleCategory = sequelize.models.ArticleCategory;
     this._User = sequelize.models.User;
 
     this._includeUser = {
@@ -58,7 +59,7 @@ class ArticleService {
           model: this._Comment,
           as: Alias.COMMENTS,
           include: [this._includeUser],
-        }
+        },
       ],
       order: [
         [{model: this._Comment, as: Alias.COMMENTS}, `createdAt`, `DESC`],
@@ -78,14 +79,36 @@ class ArticleService {
     return !!affectedRows;
   }
 
-  async findPage({limit, offset}) {
-    const {count, rows} = await this._Article.findAndCountAll({
+  async findPage({categoryId, limit, offset}) {
+    let queryModel = {
       limit,
       offset,
       include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
       order: [[`createdAt`, `DESC`]],
       distinct: true,
-    });
+    };
+
+    if (categoryId) {
+      const articlesIdByCategory = await this._ArticleCategory.findAll({
+        attributes: [`ArticleId`],
+        where: {
+          CategoryId: categoryId,
+        },
+        raw: true,
+      });
+
+      const articleIds = articlesIdByCategory.map((item) => item.ArticleId);
+
+      queryModel = {
+        ...queryModel,
+        where: {
+          id: articleIds,
+        },
+      };
+    }
+
+    const {count, rows} = await this._Article.findAndCountAll(queryModel);
+
     return {count, articles: rows};
   }
 

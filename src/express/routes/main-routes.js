@@ -1,12 +1,14 @@
 "use strict";
 
 const {Router} = require(`express`);
+
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
 const upload = require(`../../service/middlewares/upload`);
+const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
+const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
 
-const OFFERS_PER_PAGE = 8;
 const MOST_COMMENTED_ARTICLES_LIMIT = 8;
 
 const logger = getLogger({name: `api`});
@@ -17,8 +19,8 @@ mainRouter.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = +page;
 
-  const limit = OFFERS_PER_PAGE;
-  const offset = (page - 1) * OFFERS_PER_PAGE;
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   const [{count, articles}, mostCommentedArticles, categories, comments] = await Promise.all([
     api.getArticles({limit, offset, comments: true}),
@@ -26,7 +28,7 @@ mainRouter.get(`/`, async (req, res) => {
     api.getCategories(true),
     api.getLastComments(10),
   ]);
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
   res.render(`main`, {articles, mostCommentedArticles, comments, page, totalPages, categories, user});
 });
 
@@ -98,6 +100,6 @@ mainRouter.get(`/logout`, (req, res) => {
   res.redirect(`/`);
 });
 
-mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`));
+mainRouter.get(`/categories`, auth(true), (req, res) => res.render(`all-categories`, {user: req.session.user}));
 
 module.exports = mainRouter;
