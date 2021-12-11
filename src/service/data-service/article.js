@@ -38,7 +38,7 @@ class ArticleService {
       include.push({
         model: this._Comment,
         as: Alias.COMMENTS,
-        include: [Alias.USER],
+        include: [this._includeUser],
       });
     }
 
@@ -51,8 +51,23 @@ class ArticleService {
   }
 
   async findOne(id) {
-    return this._Article.findByPk(id, {
-      include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
+    return await this._Article.findOne({
+      include: [
+        Alias.CATEGORIES,
+        {
+          model: this._Comment,
+          as: Alias.COMMENTS,
+          include: [this._includeUser],
+        }
+      ],
+      order: [
+        [{model: this._Comment, as: Alias.COMMENTS}, `createdAt`, `DESC`],
+      ],
+      where: [
+        {
+          id,
+        },
+      ],
     });
   }
 
@@ -79,19 +94,27 @@ class ArticleService {
       limit,
       attributes: {
         include: [
-          [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `commentsCount`]
-        ]
+          [
+            this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)),
+            `commentsCount`,
+          ],
+        ],
       },
-      include: [{
-        model: this._Comment,
-        as: Alias.COMMENTS,
-        attributes: []
-      }],
+      include: [
+        {
+          model: this._Comment,
+          as: Alias.COMMENTS,
+          attributes: [],
+        },
+      ],
       group: [`Article.id`],
       order: [
-        [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `DESC`]
+        [
+          this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)),
+          `DESC`,
+        ],
       ],
-      subQuery: false
+      subQuery: false,
     });
 
     return result.map((it) => it.get());

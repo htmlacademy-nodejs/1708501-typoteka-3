@@ -55,7 +55,7 @@ const mockData = [
     categories: [`Без рамки`, `Железо`, `IT`, `Музыка`, `Кино`, `Деревья`],
     comments: [
       {
-        user: `ivanov@example.com`,
+        user: `petrov@example.com`,
         text: `Мне не нравится ваш стиль. Ощущение, что вы меня поучаете. Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`,
       },
       {
@@ -168,6 +168,10 @@ describe(`API returns an article with given id`, () => {
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
   test(`Article title is "Обзор новейшего смартфона!"`, () =>
     expect(response.body.title).toBe(`Обзор новейшего смартфона!`));
+  test(`First comment autor name is "Пётр"`, () =>
+    expect(response.body.comments[0].user.firstName).toBe(`Пётр`));
+
+
 });
 
 describe(`API creates an article if data is valid`, () => {

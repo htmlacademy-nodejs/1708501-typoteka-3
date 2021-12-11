@@ -124,23 +124,23 @@ articlesRouter.post(
     }
 );
 
-articlesRouter.get(`/:id`, async (req, res) => {
+articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(true),
   ]);
-  res.render(`article/article`, {article, categories, user});
+  res.render(`article/article`, {article, categories, user, csrfToken: req.csrfToken()});
 });
 
-articlesRouter.post(`/:id/comments`, async (req, res) => {
+articlesRouter.post(`/:id/comments`, [auth, csrfProtection], async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
-  const {comment} = req.body;
+  const {body} = req;
 
   try {
-    await api.createComment(id, {userId: user.id, text: comment});
+    await api.createComment(id, {userId: user.id, text: body.comment});
     res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
@@ -154,6 +154,7 @@ articlesRouter.post(`/:id/comments`, async (req, res) => {
       validationMessages,
       categories,
       user,
+      csrfToken: req.csrfToken(),
     });
   }
 });

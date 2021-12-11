@@ -7,7 +7,7 @@ GET http://localhost:3000/api/articles?comments=true
 
 ###
 # GET /api/articles/:articleId — возвращает полную информацию о публикации;
-GET http://localhost:3000/api/articles/65
+GET http://localhost:3000/api/articles/1
 
 ###
 # GET /api/categories — возвращает список категорий;
@@ -59,11 +59,12 @@ DELETE http://localhost:3000/api/articles/5/comments/12
 
 ###
 # POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
-POST http://localhost:3000/api/articles/1/comments
+POST http://localhost:3000/api/articles/5/comments
 Content-Type: application/json
 
 {
-  "text": "Новый комментарий содержит меньше 20 символов"
+  "userId": 1,
+  "text": "Отличный новый комментарий нужной длинны"
 }
 
 ###
