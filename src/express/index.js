@@ -10,6 +10,7 @@ const articlesRoutes = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
 const {HttpCode} = require(`../service/constants`);
+const {formatDate} = require(`../utils`);
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
@@ -49,9 +50,11 @@ app.use(`/articles`, articlesRoutes);
 
 app.use((req, res) => res.status(HttpCode.NOT_FOUND).render(`errors/404`));
 
-// app.use((err, _req, res, _next) => {
-//   res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
-// });
+app.use((err, _req, res, _next) => {
+  res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
+});
+
+app.locals.formatDate = formatDate;
 
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
