@@ -24,4 +24,11 @@ myRouter.get(`/comments`, auth(true), async (req, res) => {
   res.render(`admin/comments`, {articles, user});
 });
 
+myRouter.get(`/delete/article/:id`, auth(true), async (req, res) => {
+  const {id} = req.params;
+
+  await api.deleteArticle(id);
+  res.redirect(`/my`);
+});
+
 module.exports = myRouter;

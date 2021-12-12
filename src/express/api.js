@@ -70,6 +70,12 @@ class API {
       data: {email, password}
     });
   }
+
+  deleteArticle(id) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.DELETE
+    });
+  }
 }
 
 const TIMEOUT = 1000;
