@@ -20,7 +20,8 @@ module.exports = (app, categoryService) => {
   });
 
   route.post(`/`, categoryValidator, async (req, res) => {
-    const category = await categoryService.create(req.body);
+    const {name} = req.body;
+    const category = await categoryService.create({name});
 
     return res.status(HttpCode.CREATED).json(category);
   });
@@ -29,10 +30,11 @@ module.exports = (app, categoryService) => {
       `/:categoryId`,
       [routeParamsValidator, categoryExist(categoryService), categoryValidator],
       async (req, res) => {
+        const {name} = req.body;
         const {categoryId} = req.params;
         const updatedCategory = await categoryService.update(
             categoryId,
-            req.body
+            {name}
         );
 
         if (!updatedCategory) {

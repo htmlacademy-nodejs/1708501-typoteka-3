@@ -479,8 +479,8 @@ describe(`API returns a list of last N comments`, () => {
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
   test(`Returns a list of 7 articles`, () =>
     expect(response.body.length).toBe(LIMIT));
-  test(`First comment equals "Плюсую, но слишком много буквы! Планируете записать видосик на эту тему?"`, () =>
+  test(`First comment equals "Согласен с автором!"`, () =>
     expect(response.body[0].text).toBe(
-        `Плюсую, но слишком много буквы! Планируете записать видосик на эту тему?`
+        `Согласен с автором!`
     ));
 });

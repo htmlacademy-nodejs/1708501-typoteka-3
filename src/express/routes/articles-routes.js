@@ -42,7 +42,6 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
   const categoryIdNumber = Number.parseInt(categoryId, 10);
   const category = categories.find((cat) => cat.id === categoryIdNumber);
-  console.log(`categories`, categories);
 
   if (!category) {
     res.redirect(`/404`);
