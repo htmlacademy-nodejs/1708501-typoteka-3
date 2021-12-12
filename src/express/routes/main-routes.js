@@ -9,7 +9,8 @@ const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
 const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
 
-const MOST_COMMENTED_ARTICLES_LIMIT = 8;
+const MOST_COMMENTED_ARTICLES_LIMIT = 4;
+const LAST_COMMENTS_LIMIT = 4;
 
 const logger = getLogger({name: `api`});
 const mainRouter = new Router();
@@ -26,7 +27,7 @@ mainRouter.get(`/`, async (req, res) => {
     api.getArticles({limit, offset, comments: true}),
     api.getArticles({limit: MOST_COMMENTED_ARTICLES_LIMIT, orderByComments: true}),
     api.getCategories(true),
-    api.getLastComments(10),
+    api.getLastComments(LAST_COMMENTS_LIMIT),
   ]);
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
   res.render(`main`, {articles, mostCommentedArticles, comments, page, totalPages, categories, user});

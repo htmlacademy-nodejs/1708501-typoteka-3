@@ -174,7 +174,7 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
 
 articlesRouter.post(
     `/:id/comments`,
-    [auth, csrfProtection],
+    [auth(), csrfProtection],
     async (req, res) => {
       const {user} = req.session;
       const {id} = req.params;

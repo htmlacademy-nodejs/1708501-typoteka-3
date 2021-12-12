@@ -8,7 +8,7 @@ const define = (sequelize) =>
   Comment.init(
       {
         text: {
-          type: DataTypes.STRING,
+          type: DataTypes.STRING(1000),
           allowNull: false,
         },
       },

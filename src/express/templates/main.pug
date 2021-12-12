@@ -1,5 +1,8 @@
 extends layout.pug
 
+mixin trimText(text)
+  = text.length > 100 ? `${text.substring(0, 100)}...` : text
+
 block content
   main.main-page
     h1.visually-hidden Главная страница личного блога Типотека
@@ -27,7 +30,8 @@ block content
           ul.hot__list
             each article of mostCommentedArticles
               li.hot__list-item
-                a.hot__list-link(href=`/articles/${article.id}`) #{article.announce.length > 100 ? `${article.announce.substring(0, 100)}...` : article.announce}
+                a.hot__list-link(href=`/articles/${article.id}`)
+                  +trimText(article.announce)
                   sup.hot__link-sup #{article.commentsCount}
 
       section.main-page__last.last
@@ -43,7 +47,8 @@ block content
               li.last__list-item
                 img.last__list-image(src=`${comment.user.avatar}` width='20' height='20' alt='Аватар пользователя')
                 b.last__list-name #{comment.user.firstName} #{comment.user.lastName}
-                a.last__list-link(href=`/articles/${comment.articleId}`) #{comment.text}
+                a.last__list-link(href=`/articles/${comment.articleId}`)
+                  +trimText(comment.text)
 
     section.main-page__list.preview
       h2.visually-hidden Список превью статей
