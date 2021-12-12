@@ -6,8 +6,12 @@ GET http://localhost:3000/api/articles
 GET http://localhost:3000/api/articles?comments=true
 
 ###
+# GET /api/articles — ресурс возвращает список публикаций с по категории;
+GET http://localhost:3000/api/articles?categoryId=2&limit=2
+
+###
 # GET /api/articles/:articleId — возвращает полную информацию о публикации;
-GET http://localhost:3000/api/articles/65
+GET http://localhost:3000/api/articles/1
 
 ###
 # GET /api/categories — возвращает список категорий;
@@ -29,6 +33,12 @@ Content-Type: application/json
   "picture": "path_to_image.jpg",
   "categories": [1, 2]
 }
+
+###
+GET http://localhost:3000/api/articles/comments?limit=10
+
+###
+GET http://localhost:3000/api/articles/comments
 
 ###
 # PUT /api/articles/:articleId — редактирует определённую публикацию;
@@ -56,12 +66,17 @@ DELETE http://localhost:3000/api/articles/5/comments/12
 
 ###
 # POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
-POST http://localhost:3000/api/articles/1/comments
+POST http://localhost:3000/api/articles/5/comments
 Content-Type: application/json
 
 {
-  "text": "Новый комментарий содержит меньше 20 символов"
+  "userId": 1,
+  "text": "Отличный новый комментарий нужной длинны"
 }
+
+###
+# POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
+GET http://localhost:3000/api/articles/allcomments
 
 ###
 # Поиск

@@ -1,31 +1,50 @@
 "use strict";
 
 const {Router} = require(`express`);
+const csrf = require(`csurf`);
+
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
 const upload = require(`../../service/middlewares/upload`);
+const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
+const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
 
-const OFFERS_PER_PAGE = 8;
+const MOST_COMMENTED_ARTICLES_LIMIT = 4;
+const LAST_COMMENTS_LIMIT = 4;
 
 const logger = getLogger({name: `api`});
 const mainRouter = new Router();
+const csrfProtection = csrf();
 
 mainRouter.get(`/`, async (req, res) => {
   const {user} = req.session;
   let {page = 1} = req.query;
   page = +page;
 
-  const limit = OFFERS_PER_PAGE;
-  const offset = (page - 1) * OFFERS_PER_PAGE;
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
 
-  const [{count, articles}, categories] = await Promise.all([
-    api.getArticles({limit, offset, comments: true}),
-    api.getCategories(true)
-  ]);
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-
-  res.render(`main`, {articles, page, totalPages, categories, user});
+  const [{count, articles}, mostCommentedArticles, categories, comments] =
+    await Promise.all([
+      api.getArticles({limit, offset, comments: true}),
+      api.getArticles({
+        limit: MOST_COMMENTED_ARTICLES_LIMIT,
+        orderByComments: true,
+      }),
+      api.getCategories(true),
+      api.getLastComments(LAST_COMMENTS_LIMIT),
+    ]);
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+  res.render(`main`, {
+    articles,
+    mostCommentedArticles,
+    comments,
+    page,
+    totalPages,
+    categories,
+    user,
+  });
 });
 
 mainRouter.get(`/search`, async (req, res) => {
@@ -36,11 +55,13 @@ mainRouter.get(`/search`, async (req, res) => {
     const results = await api.search(query);
 
     res.render(`search`, {
-      results, user
+      results,
+      user,
     });
   } catch (error) {
     res.render(`search`, {
-      results: []
+      results: [],
+      user,
     });
   }
 });
@@ -58,7 +79,7 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     lastName: body.lastName,
     email: body.email,
     password: body.password,
-    passwordRepeated: body[`repeat-password`]
+    passwordRepeated: body[`repeat-password`],
   };
 
   try {
@@ -96,6 +117,87 @@ mainRouter.get(`/logout`, (req, res) => {
   res.redirect(`/`);
 });
 
-mainRouter.get(`/categories`, (req, res) => res.render(`all-categories`));
+mainRouter.get(
+    `/categories`,
+    [auth(true), csrfProtection],
+    async (req, res) => {
+      const {
+        session: {user},
+      } = req;
+      const categories = await api.getCategories();
+
+      res.render(`all-categories`, {
+        categories,
+        user,
+        csrfToken: req.csrfToken(),
+      });
+    }
+);
+
+mainRouter.post(
+    `/categories`,
+    [auth(true), csrfProtection],
+    async (req, res) => {
+      const {
+        body: {name},
+      } = req;
+
+      try {
+        await api.addCategory({name});
+        res.redirect(`/categories`);
+      } catch (errors) {
+        const {
+          session: {user},
+        } = req;
+        const validationAddMessages = prepareErrors(errors);
+        const categories = await api.getCategories();
+        res.render(`all-categories`, {
+          categories,
+          user,
+          validationAddMessages,
+          csrfToken: req.csrfToken(),
+        });
+      }
+    }
+);
+
+mainRouter.post(
+    `/categories/:categoryId`,
+    [auth(true), csrfProtection],
+    async (req, res) => {
+      const {
+        body: {name},
+      } = req;
+      const {categoryId} = req.params;
+
+      try {
+        await api.updateCategory(categoryId, {name});
+        res.redirect(`/categories`);
+      } catch (errors) {
+        const {
+          session: {user},
+        } = req;
+        const validationEditMessages = prepareErrors(errors);
+        const categories = await api.getCategories();
+        res.render(`all-categories`, {
+          categories,
+          user,
+          validationEditMessages,
+          csrfToken: req.csrfToken(),
+        });
+      }
+    }
+);
+
+mainRouter.get(
+    `/categories/delete/:categoryId`,
+    [auth(true)],
+    async (req, res) => {
+      const {categoryId} = req.params;
+
+      await api.deleteCategory(categoryId);
+      res.redirect(`/categories`);
+    }
+);
 
 module.exports = mainRouter;

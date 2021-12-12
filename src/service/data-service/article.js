@@ -4,9 +4,11 @@ const Alias = require(`../models/alias`);
 
 class ArticleService {
   constructor(sequelize) {
+    this._sequelize = sequelize;
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
+    this._ArticleCategory = sequelize.models.ArticleCategory;
     this._User = sequelize.models.User;
 
     this._includeUser = {
@@ -37,7 +39,7 @@ class ArticleService {
       include.push({
         model: this._Comment,
         as: Alias.COMMENTS,
-        include: [Alias.USER],
+        include: [this._includeUser],
       });
     }
 
@@ -50,8 +52,23 @@ class ArticleService {
   }
 
   async findOne(id) {
-    return this._Article.findByPk(id, {
-      include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
+    return await this._Article.findOne({
+      include: [
+        Alias.CATEGORIES,
+        {
+          model: this._Comment,
+          as: Alias.COMMENTS,
+          include: [this._includeUser],
+        },
+      ],
+      order: [
+        [{model: this._Comment, as: Alias.COMMENTS}, `createdAt`, `DESC`],
+      ],
+      where: [
+        {
+          id,
+        },
+      ],
     });
   }
 
@@ -62,15 +79,67 @@ class ArticleService {
     return !!affectedRows;
   }
 
-  async findPage({limit, offset}) {
-    const {count, rows} = await this._Article.findAndCountAll({
+  async findPage({categoryId, limit, offset}) {
+    let queryModel = {
       limit,
       offset,
       include: [Alias.CATEGORIES, Alias.COMMENTS, this._includeUser],
       order: [[`createdAt`, `DESC`]],
       distinct: true,
-    });
+    };
+
+    if (categoryId) {
+      const articlesIdByCategory = await this._ArticleCategory.findAll({
+        attributes: [`ArticleId`],
+        where: {
+          CategoryId: categoryId,
+        },
+        raw: true,
+      });
+
+      const articleIds = articlesIdByCategory.map((item) => item.ArticleId);
+
+      queryModel = {
+        ...queryModel,
+        where: {
+          id: articleIds,
+        },
+      };
+    }
+
+    const {count, rows} = await this._Article.findAndCountAll(queryModel);
     return {count, articles: rows};
+  }
+
+  async getMostCommentedArticles({limit}) {
+    const result = await this._Article.findAll({
+      limit,
+      attributes: {
+        include: [
+          [
+            this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)),
+            `commentsCount`,
+          ],
+        ],
+      },
+      include: [
+        {
+          model: this._Comment,
+          as: Alias.COMMENTS,
+          attributes: [],
+        },
+      ],
+      group: [`Article.id`],
+      order: [
+        [
+          this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)),
+          `DESC`,
+        ],
+      ],
+      subQuery: false,
+    });
+
+    return result.map((it) => it.get());
   }
 }
 

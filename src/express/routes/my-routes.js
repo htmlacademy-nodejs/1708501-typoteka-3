@@ -1,5 +1,4 @@
-'use strict';
-
+"use strict";
 
 const {Router} = require(`express`);
 
@@ -8,20 +7,39 @@ const api = require(`../api`).getAPI();
 
 const myRouter = new Router();
 
-myRouter.get(`/`, auth, async (req, res) => {
+myRouter.get(`/`, auth(true), async (req, res) => {
   const {user} = req.session;
   const [articles, categories] = await Promise.all([
     api.getArticles({comments: true}),
-    api.getCategories(true)
+    api.getCategories(true),
   ]);
 
   res.render(`admin/my`, {articles, categories, user});
 });
 
-myRouter.get(`/comments`, auth, async (req, res) => {
+myRouter.get(`/comments`, auth(true), async (req, res) => {
   const {user} = req.session;
-  const articles = await api.getArticles({comments: true});
-  res.render(`admin/comments`, {articles, user});
+  const comments = await api.getLastComments();
+  console.log(`comments`, comments);
+  res.render(`admin/comments`, {comments, user});
 });
+
+myRouter.get(`/delete/article/:id`, auth(true), async (req, res) => {
+  const {id} = req.params;
+
+  await api.deleteArticle(id);
+  res.redirect(`/my`);
+});
+
+myRouter.get(
+    `/comments/delete/:articleId/:commentId`,
+    auth(true),
+    async (req, res) => {
+      const {articleId, commentId} = req.params;
+
+      await api.deleteComment(articleId, commentId);
+      res.redirect(`/my/comments`);
+    }
+);
 
 module.exports = myRouter;

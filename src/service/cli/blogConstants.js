@@ -6,7 +6,7 @@ const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
 const ANNOUNCE_LENGTH = 5;
 const MAX_ID_LENGTH = 6;
-const MAX_COMMENTS = 4;
+const MAX_COMMENTS = 10;
 
 const MONTH_RESTRICT = 3;
 

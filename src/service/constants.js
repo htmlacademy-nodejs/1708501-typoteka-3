@@ -11,6 +11,8 @@ const DEFAULT_COMMAND = `--help`;
 
 const USER_ARGV_INDEX = 2;
 
+const ARTICLES_PER_PAGE = 8;
+
 const ExitCode = {
   success: 0,
   uncaughtFatalException: 1,
@@ -46,6 +48,7 @@ module.exports = {
   MOCK_FILE_PATH,
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
+  ARTICLES_PER_PAGE,
   HttpCode,
   HttpMethod,
   ExitCode,

@@ -12,7 +12,7 @@ class CategoryService {
   async findAll(needCount) {
     if (needCount) {
       const result = await this._Category.findAll({
-        attributes: [`id`, `name`, [Sequelize.fn(`COUNT`, `*`), `count`]],
+        attributes: [`id`, `name`, [Sequelize.fn(`COUNT`, `CategoryId`), `count`]],
         group: [Sequelize.col(`Category.id`)],
         include: [
           {
@@ -24,9 +24,33 @@ class CategoryService {
       });
 
       return result.map((it) => it.get());
+    } else {
+      return this._Category.findAll({raw: true});
     }
+  }
 
-    return this._Category.findAll({raw: true});
+  async findOne(id) {
+    return await this._Category.findOne({
+      where: {id}
+    });
+  }
+
+  async create(data) {
+    return await this._Category.create(data);
+  }
+
+  async update(id, data) {
+    const [affectedRows] = await this._Category.update(data, {
+      where: {id}
+    });
+
+    return !!affectedRows;
+  }
+
+  async drop(id) {
+    return this._Category.destroy({
+      where: {id}
+    });
   }
 }
 

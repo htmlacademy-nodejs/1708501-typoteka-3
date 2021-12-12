@@ -2,6 +2,7 @@
 
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
+const dayjs = require(`dayjs`);
 
 module.exports.getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -34,4 +35,8 @@ module.exports.readContent = async (filePath) => {
 
 module.exports.prepareErrors = (errors) => {
   return errors.response.data.split(`\n`);
+};
+
+module.exports.formatDate = (date) => {
+  return dayjs(date).format(`hh:mm DD.MM.YYYY`);
 };

@@ -1,6 +1,6 @@
 {
   "name": "1708501-typoteka-3",
-  "version": "1.14.0",
+  "version": "1.16.0",
   "description": "Типотека",
   "main": "./src/service/service.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "start-back-server::debug": "cross-env LOG_LEVEL=info NODE_ENV=development node -r dotenv/config ./src/service/service.js --server",
     "server": "nodemon ./src/service/service.js --server",
     "start-front-server": "node -r dotenv/config ./src/express/index.js",
-    "start-servers": "concurrently --prefix \"{time} — {pid}\" --names \"BACKEND, FRONT\" --prefix-colors \"red,green\" \"npm run start-back-server\" \"npm run start-front-server\"",
+    "start-servers": "concurrently --prefix \"{time} — {pid}\" --names \"BACKEND, FRONT\" --prefix-colors \"blue,green\" \"npm run start-back-server\" \"npm run start-front-server\"",
     "start": "npm run start-servers",
     "test": "npm run eslint && npm run jest",
     "jest": "jest",
@@ -46,6 +46,7 @@
     "connect-session-sequelize": "7.1.2",
     "cross-env": "7.0.3",
     "csurf": "1.11.0",
+    "dayjs": "1.10.7",
     "dotenv": "10.0.0",
     "express": "4.17.1",
     "express-session": "1.17.2",
