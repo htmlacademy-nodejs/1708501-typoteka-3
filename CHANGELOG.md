@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.15.0...v1.16.0) (2021-12-12)
+
+
+### Features
+
+* добавил API категорий и тесты к ним ([8f5ce20](https://github.com/YoginAlex/1708501-typoteka-3/commit/8f5ce2003caaedc2529451f4c33268959c3c24ba))
+* поправил тексты в горячем ([7527835](https://github.com/YoginAlex/1708501-typoteka-3/commit/752783597ed7c02e4077cbb78113da40aadafb2f))
+* работа с комментариями ([4f13f78](https://github.com/YoginAlex/1708501-typoteka-3/commit/4f13f787ff42360f970998ea36fa9f1ccd65fa95))
+* удаление публикаций ([d4ddec6](https://github.com/YoginAlex/1708501-typoteka-3/commit/d4ddec69c1a4a8baa6b00fee56464e91a8ea91b1))
+* фронт для работы с категориями ([4ef239a](https://github.com/YoginAlex/1708501-typoteka-3/commit/4ef239a387b219a052e1866c157fcee0893c7eba))
+
+
+### Bug Fixes
+
+* подрезал анонсы в топе ([68ce348](https://github.com/YoginAlex/1708501-typoteka-3/commit/68ce3480800f478267e066343308f6db110135ee))
+* поправил поиск ([56aa4e2](https://github.com/YoginAlex/1708501-typoteka-3/commit/56aa4e204dc2f5a256a6e8a4d31963b5f01aff11))
+
 ## [1.15.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.14.0...v1.15.0) (2021-12-11)
 
 
