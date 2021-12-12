@@ -7,6 +7,7 @@ class SearchService {
   constructor(sequelize) {
     this._Article = sequelize.models.Article;
     this._User = sequelize.models.User;
+    this._sequelize = sequelize;
 
     this._includeUser = {
       model: this._User,
@@ -21,12 +22,10 @@ class SearchService {
     const articles = await this._Article.findAll({
       where: {
         title: {
-          [Op.substring]: `%${searchText}%`,
-        },
+          [Op.iLike]: `%` + searchText + `%`
+        }
       },
-      include: [
-        Alias.CATEGORIES, this._includeUser
-      ],
+      include: [Alias.CATEGORIES, this._includeUser],
       order: [[`createdAt`, `DESC`]],
     });
 

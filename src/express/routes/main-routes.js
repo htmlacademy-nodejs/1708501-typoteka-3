@@ -45,7 +45,8 @@ mainRouter.get(`/search`, async (req, res) => {
     });
   } catch (error) {
     res.render(`search`, {
-      results: []
+      results: [],
+      user
     });
   }
 });
