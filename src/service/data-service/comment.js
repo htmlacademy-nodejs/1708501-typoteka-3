@@ -1,12 +1,20 @@
 "use strict";
 
 const Alias = require(`../models/alias`);
-const {DEFAULT_COMMENTS_LIMIT} = require(`../constants`);
 
 class CommentsService {
   constructor(sequelize) {
     this._Comment = sequelize.models.Comment;
     this._User = sequelize.models.User;
+    this._Article = sequelize.models.Article;
+
+    this._includeUser = {
+      model: this._User,
+      as: Alias.USER,
+      attributes: {
+        exclude: [`passwordHash`],
+      },
+    };
   }
 
   async create(articleId, comment) {
@@ -31,21 +39,25 @@ class CommentsService {
   }
 
   async getLastComments(limit) {
-    return this._Comment.findAll({
-      order: [
-        [`createdAt`, `DESC`]
-      ],
+    let querySchema = {
+      order: [[`createdAt`, `DESC`]],
       include: [
+        this._includeUser,
         {
-          model: this._User,
-          as: Alias.USER,
-          attributes: {
-            exclude: [`passwordHash`]
-          }
-        }
+          model: this._Article,
+          attributes: [`id`, `title`]
+        },
       ],
-      limit: limit || DEFAULT_COMMENTS_LIMIT
-    });
+    };
+
+    if (limit) {
+      querySchema = {
+        ...querySchema,
+        limit,
+      };
+    }
+
+    return this._Comment.findAll(querySchema);
   }
 }
 

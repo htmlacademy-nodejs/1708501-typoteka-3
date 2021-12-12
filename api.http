@@ -38,6 +38,9 @@ Content-Type: application/json
 GET http://localhost:3000/api/articles/comments?limit=10
 
 ###
+GET http://localhost:3000/api/articles/comments
+
+###
 # PUT /api/articles/:articleId — редактирует определённую публикацию;
 PUT http://localhost:3000/api/articles/13
 Content-Type: application/json
@@ -70,6 +73,10 @@ Content-Type: application/json
   "userId": 1,
   "text": "Отличный новый комментарий нужной длинны"
 }
+
+###
+# POST /api/articles/VHC3W1/comments — создаёт новый комментарий;
+GET http://localhost:3000/api/articles/allcomments
 
 ###
 # Поиск

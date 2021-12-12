@@ -97,6 +97,11 @@ class API {
     });
   }
 
+  deleteComment(articleId, commentId) {
+    return this._load(`/articles/${articleId}/comments/${commentId}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
 }
 
 const TIMEOUT = 1000;

@@ -4,15 +4,15 @@ block content
   main.main-page.main-page--padding
     section.main-page__publication.publication
       h1.publication__title Комментарии
+
       ul.publication__list
-        each article, index in articles
-          each comment in article.comments
-            li.publication__list-item(class={'publication__list-item--last': index === articles.length - 1})
-              .publication__header
-                img.publication__list-image(src='/img/avatar-small-2.png' width='20' height='20' alt='Аватар пользователя')
-                b.publication__list-name Александр Петров
-                time.publication__item-time(datetime='#{article.createdAt}') #{formatDate(article.createdAt)}
-              a.publication__item-text(href='#') #{article.title}
-              p.publication__text-strong #{comment.text}
-              button.publication__button.button.button--close-item(type='button')
-                span.visually-hidden Закрыть строку списка
+        each comment in comments
+          li.publication__list-item(class={'publication__list-item--last': index === comments.length - 1})
+            .publication__header
+              img.publication__list-image(src=`${user.avatar}` width='20' height='20' alt=`Аватар пользователя ${user.firstName} ${user.lastName}`)
+              b.publication__list-name #{user.firstName} #{user.lastName}
+              time.publication__item-time(datetime='#{comment.createdAt}') #{formatDate(comment.createdAt)}
+            a.publication__item-text(href=`/articles/${comment.Article.id}`) #{comment.Article.title}
+            p.publication__text-strong #{comment.text}
+            a.publication__button.button.button--close-item(href=`/my/comments/delete/${comment.Article.id}/${comment.id}`)
+              span.visually-hidden Закрыть строку списка
