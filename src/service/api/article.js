@@ -2,7 +2,11 @@
 
 const {Router} = require(`express`);
 
-const {HttpCode} = require(`../constants`);
+const {
+  HttpCode,
+  LAST_COMMENTS_LIMIT,
+  MOST_COMMENTED_ARTICLES_LIMIT,
+} = require(`../constants`);
 
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exist`);
@@ -39,12 +43,16 @@ module.exports = (app, articleService, commentService) => {
   });
 
   // GET /api/articles/:articleId — возвращает полную информацию о публикации;
-  route.get(`/:articleId`, [routeParamsValidator, articleExist(articleService)], async (req, res) => {
-    const {articleId} = req.params;
-    const article = await articleService.findOne(articleId);
+  route.get(
+      `/:articleId`,
+      [routeParamsValidator, articleExist(articleService)],
+      async (req, res) => {
+        const {articleId} = req.params;
+        const article = await articleService.findOne(articleId);
 
-    return res.status(HttpCode.OK).json(article);
-  });
+        return res.status(HttpCode.OK).json(article);
+      }
+  );
 
   // POST /api/articles — создаёт новую публикацию;
   route.post(`/`, articleValidator, async (req, res) => {
@@ -108,6 +116,18 @@ module.exports = (app, articleService, commentService) => {
       async (req, res) => {
         const {articleId} = req.params;
         const comment = await commentService.create(articleId, req.body);
+
+        if (comment) {
+          const io = req.app.locals.socketio;
+          const comments = await commentService.getLastComments(
+              LAST_COMMENTS_LIMIT
+          );
+          const articles = await articleService.getMostCommentedArticles({
+            limit: MOST_COMMENTED_ARTICLES_LIMIT,
+          });
+
+          io.emit(`comment:create`, articles, comments);
+        }
 
         return res.status(HttpCode.CREATED).json(comment);
       }
