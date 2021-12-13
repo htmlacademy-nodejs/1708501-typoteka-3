@@ -1,7 +1,7 @@
 extends layout.pug
 
-mixin trimText(text)
-  = text.length > 100 ? `${text.substring(0, 100)}...` : text
+mixin trimText(text, trimmingLength = 100)
+  = text.length > trimmingLength ? `${text.substring(0, trimmingLength)}...` : text
 
 block content
   main.main-page

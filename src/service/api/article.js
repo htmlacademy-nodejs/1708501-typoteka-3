@@ -39,15 +39,9 @@ module.exports = (app, articleService, commentService) => {
   });
 
   // GET /api/articles/:articleId — возвращает полную информацию о публикации;
-  route.get(`/:articleId`, routeParamsValidator, async (req, res) => {
+  route.get(`/:articleId`, [routeParamsValidator, articleExist(articleService)], async (req, res) => {
     const {articleId} = req.params;
     const article = await articleService.findOne(articleId);
-
-    if (!article) {
-      return res
-        .status(HttpCode.NOT_FOUND)
-        .send(`Not found with ${articleId}.`);
-    }
 
     return res.status(HttpCode.OK).json(article);
   });

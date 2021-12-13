@@ -13,6 +13,8 @@ const USER_ARGV_INDEX = 2;
 
 const ARTICLES_PER_PAGE = 8;
 
+const AUTHOR_USER_ID = 1;
+
 const ExitCode = {
   success: 0,
   uncaughtFatalException: 1,
@@ -49,6 +51,7 @@ module.exports = {
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
   ARTICLES_PER_PAGE,
+  AUTHOR_USER_ID,
   HttpCode,
   HttpMethod,
   ExitCode,

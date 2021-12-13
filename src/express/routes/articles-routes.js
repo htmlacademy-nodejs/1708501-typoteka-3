@@ -159,16 +159,22 @@ articlesRouter.post(
 articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {user} = req.session;
   const {id} = req.params;
-  const [article, categories] = await Promise.all([
-    api.getArticle(id),
-    api.getCategories(true),
-  ]);
-  res.render(`article/article`, {
-    article,
-    categories,
-    user,
-    csrfToken: req.csrfToken(),
-  });
+
+  try {
+    const [article, categories] = await Promise.all([
+      api.getArticle(id),
+      api.getCategories(true),
+    ]);
+    res.render(`article/article`, {
+      article,
+      categories,
+      user,
+      csrfToken: req.csrfToken(),
+    });
+  } catch (error) {
+    logger.error(`An error article get: ${error.request.statusCode}`);
+    res.status(404).render(`errors/404`, {user});
+  }
 });
 
 articlesRouter.post(
