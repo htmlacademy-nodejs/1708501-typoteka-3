@@ -8,10 +8,11 @@ const {getLogger} = require(`../../service/lib/logger`);
 const upload = require(`../../service/middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
-const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
-
-const MOST_COMMENTED_ARTICLES_LIMIT = 4;
-const LAST_COMMENTS_LIMIT = 4;
+const {
+  ARTICLES_PER_PAGE,
+  LAST_COMMENTS_LIMIT,
+  MOST_COMMENTED_ARTICLES_LIMIT,
+} = require(`../../service/constants`);
 
 const logger = getLogger({name: `api`});
 const mainRouter = new Router();
