@@ -5,7 +5,7 @@ const csrf = require(`csurf`);
 
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
-const upload = require(`../../service/middlewares/upload`);
+const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
 const {ARTICLES_PER_PAGE} = require(`../../service/constants`);

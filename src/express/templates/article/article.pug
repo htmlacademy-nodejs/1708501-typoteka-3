@@ -33,7 +33,7 @@ block content
               each comment in article.comments
                 li.comments__comment
                   .comments__avatar.avatar
-                    img(src=`${comment.user.avatar}` alt=`Aватар пользователя ${comment.user.firstName} ${comment.user.lastName}`)
+                    img(src=`/img/${comment.user.avatar}` alt=`Aватар пользователя ${comment.user.firstName} ${comment.user.lastName}`)
                   .comments__text
                     .comments__head
                       p #{comment.user.firstName} #{comment.user.lastName} •
@@ -47,7 +47,7 @@ block content
               form(action=`/articles/${article.id}/comments` method='POST')
                 input(type="hidden" name="_csrf" value=csrfToken)
                 .comments__avatar.avatar
-                  img(src=`${user.avatar}` alt=`Aватар пользователя ${user.firstName} ${user.lastName}`)
+                  img(src=`/img/${user.avatar}` alt=`Aватар пользователя ${user.firstName} ${user.lastName}`)
                 label
                   textarea(rows='1' name='comment' placeholder='Присоединиться к обсуждению' required)
                 button.comments__button.button.button--colored(type='submit') Опубликовать

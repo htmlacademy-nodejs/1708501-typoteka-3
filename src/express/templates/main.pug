@@ -45,7 +45,7 @@ block content
           ul.last__list
             each comment of comments
               li.last__list-item
-                img.last__list-image(src=`${comment.user.avatar}` width='20' height='20' alt='Аватар пользователя')
+                img.last__list-image(src=`/img/${comment.user.avatar}` width='20' height='20' alt='Аватар пользователя')
                 b.last__list-name #{comment.user.firstName} #{comment.user.lastName}
                 a.last__list-link(href=`/articles/${comment.articleId}`)
                   +trimText(comment.text)

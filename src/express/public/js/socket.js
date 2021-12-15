@@ -24,7 +24,7 @@
       <li class="last__list-item">
         <img
           class="last__list-image"
-          src="${comment.user.avatar}"
+          src="/img/${comment.user.avatar}"
           width="20" height="20" alt="Аватар пользователя"
         />
         <b class="last__list-name">
