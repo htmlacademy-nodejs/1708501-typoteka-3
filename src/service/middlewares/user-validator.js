@@ -29,8 +29,8 @@ const schema = Joi.object({
   passwordRepeated: Joi.string().required().valid(Joi.ref(`password`)).required().messages({
     'any.only': ErrorRegisterMessage.PASSWORD_REPEATED
   }),
-  avatar: Joi.string().required().messages({
-    'string.empty': ErrorRegisterMessage.AVATAR
+  avatar: Joi.string().allow(null, ``).optional().messages({
+    'string.base': ErrorRegisterMessage.AVATAR
   })
 });
 
