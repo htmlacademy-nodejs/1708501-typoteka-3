@@ -59,11 +59,13 @@ html(lang='ru')
         each message of messages
           .server-error= message
 
-    include partials/header.pug
+    .wrapper
+      include partials/header.pug
 
-    block content
+      block content
 
-    include partials/footer.pug
+      include partials/footer.pug
+
     script(src="/js/vendor.js")
     script(src="/js/main.js")
     script(src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous")

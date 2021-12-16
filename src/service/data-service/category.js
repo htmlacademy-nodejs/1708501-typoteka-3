@@ -52,6 +52,14 @@ class CategoryService {
       where: {id}
     });
   }
+
+  async getArticlesInCategoryCount(categoryId) {
+    return this._ArticleCategory.count({
+      where: {
+        CategoryId: categoryId,
+      },
+    });
+  }
 }
 
 module.exports = CategoryService;
