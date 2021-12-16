@@ -12,6 +12,7 @@ const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
+const routeQueryValidator = require(`../middlewares/route-query-validator`);
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -19,7 +20,7 @@ module.exports = (app, articleService, commentService) => {
   app.use(`/articles`, route);
 
   // GET /api/articles - ресурс возвращает список публикаций;
-  route.get(`/`, async (req, res) => {
+  route.get(`/`, [routeQueryValidator], async (req, res) => {
     const {categoryId, offset, limit, comments, orderByComments} = req.query;
     let articles;
 
