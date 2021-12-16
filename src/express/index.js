@@ -11,7 +11,6 @@ const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
 const {
   error404Middleware,
-  error400Middleware,
   error500Middleware,
 } = require(`./middlewares/errors`);
 const {formatDate} = require(`../utils`);
@@ -57,7 +56,6 @@ app.use(`/articles`, articlesRoutes);
 app.locals.formatDate = formatDate;
 
 app.use(error404Middleware);
-app.use(error400Middleware);
 app.use(error500Middleware);
 
 app.set(`views`, path.resolve(__dirname, `templates`));
