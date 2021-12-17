@@ -15,7 +15,7 @@ const {
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
   FILE_COMMENTS_PATH,
-} = require(`./blogConstants`);
+} = require(`./blog-constants`);
 const {ExitCode} = require(`../constants`);
 const {getRandomPicture} = require(`./helpers`);
 
@@ -86,7 +86,7 @@ module.exports = {
       await sequelize.authenticate();
     } catch (err) {
       logger.error(`An error occurred: ${err.message}`);
-      process.exit(1);
+      process.exit(ExitCode.uncaughtFatalException);
     }
     logger.info(`Connection to database established`);
 
@@ -96,14 +96,14 @@ module.exports = {
         lastName: `Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `/img/avatar-1.png`,
+        avatar: `avatar-1.png`,
       },
       {
         firstName: `Пётр`,
         lastName: `Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `/img/avatar-2.png`,
+        avatar: `avatar-2.png`,
       },
     ];
 

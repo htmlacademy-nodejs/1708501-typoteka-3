@@ -7,7 +7,6 @@ class ArticleService {
     this._sequelize = sequelize;
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
-    this._Category = sequelize.models.Category;
     this._ArticleCategory = sequelize.models.ArticleCategory;
     this._User = sequelize.models.User;
 
@@ -76,6 +75,21 @@ class ArticleService {
     const [affectedRows] = await this._Article.update(article, {
       where: {id},
     });
+    return !!affectedRows;
+  }
+
+  async update(id, article) {
+    const [affectedRows] = await this._Article.update(article, {
+      where: {id},
+    });
+
+    const updatedArticle = await this._Article.findOne({
+      where: {id},
+    });
+    if (updatedArticle) {
+      await updatedArticle.setCategories(article.categories);
+    }
+
     return !!affectedRows;
   }
 

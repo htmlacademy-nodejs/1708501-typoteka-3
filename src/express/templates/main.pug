@@ -1,7 +1,7 @@
 extends layout.pug
 
-mixin trimText(text)
-  = text.length > 100 ? `${text.substring(0, 100)}...` : text
+mixin trimText(text, trimmingLength = 100)
+  = text.length > trimmingLength ? `${text.substring(0, trimmingLength)}...` : text
 
 block content
   main.main-page
@@ -15,13 +15,13 @@ block content
           li.themes__item
             a.themes__item-link(href=`/articles/category/${category.id}`)
               | #{category.name}
-              =" "
               sup #{category.count}
 
     .main-page__section-flex
       section.main-page__hot.hot
         h2.hot__name
           | Самое обсуждаемое
+          =" "
           span.hot__icon.hot__icon--fire
 
         if !mostCommentedArticles.length
@@ -37,6 +37,7 @@ block content
       section.main-page__last.last
         h2.last__name
           | Последние комментарии
+          =" "
           span.last__icon.last__icon--cloud
 
         if !comments.length
@@ -45,7 +46,7 @@ block content
           ul.last__list
             each comment of comments
               li.last__list-item
-                img.last__list-image(src=`${comment.user.avatar}` width='20' height='20' alt='Аватар пользователя')
+                img.last__list-image(src=`/img/${comment.user.avatar}` width='20' height='20' alt='Аватар пользователя')
                 b.last__list-name #{comment.user.firstName} #{comment.user.lastName}
                 a.last__list-link(href=`/articles/${comment.articleId}`)
                   +trimText(comment.text)
@@ -62,16 +63,16 @@ block content
               ul.preview__breadcrumbs
                 each category of article.categories
                   li.preview__breadcrumbs-item
-                    a.preview__breadcrumbs-link(href='#') #{category.name}
+                    a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.name}
 
               .preview__background
                 +insertArticleImage(article)(class="preview__background-image")
 
-              time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
+              time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, "article")}
               h3.preview__name
                 a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
               p.preview__text #{article.announce}
-              a.preview__comment(href='#')
+              a.preview__comment(href=`/articles/${article.id}`)
                 | Комментарии
                 span.preview__cloud
                 b.preview__comment-count #{article.comments.length}

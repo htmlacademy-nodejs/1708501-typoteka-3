@@ -9,9 +9,9 @@ block content
         each comment in comments
           li.publication__list-item(class={'publication__list-item--last': index === comments.length - 1})
             .publication__header
-              img.publication__list-image(src=`${user.avatar}` width='20' height='20' alt=`Аватар пользователя ${user.firstName} ${user.lastName}`)
+              img.publication__list-image(src=`/img/${user.avatar}` width='20' height='20' alt=`Аватар пользователя ${user.firstName} ${user.lastName}`)
               b.publication__list-name #{user.firstName} #{user.lastName}
-              time.publication__item-time(datetime='#{comment.createdAt}') #{formatDate(comment.createdAt)}
+              time.publication__item-time(datetime='#{comment.createdAt}') #{formatDate(comment.createdAt, "comment")}
             a.publication__item-text(href=`/articles/${comment.Article.id}`) #{comment.Article.title}
             p.publication__text-strong #{comment.text}
             a.publication__button.button.button--close-item(href=`/my/comments/delete/${comment.Article.id}/${comment.id}`)

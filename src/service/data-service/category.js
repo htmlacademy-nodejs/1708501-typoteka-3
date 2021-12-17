@@ -24,9 +24,9 @@ class CategoryService {
       });
 
       return result.map((it) => it.get());
-    } else {
-      return this._Category.findAll({raw: true});
     }
+
+    return this._Category.findAll({raw: true});
   }
 
   async findOne(id) {
@@ -50,6 +50,14 @@ class CategoryService {
   async drop(id) {
     return this._Category.destroy({
       where: {id}
+    });
+  }
+
+  async getArticlesInCategoryCount(categoryId) {
+    return this._ArticleCategory.count({
+      where: {
+        CategoryId: categoryId,
+      },
     });
   }
 }

@@ -1,15 +1,19 @@
 "use strict";
 
-module.exports = (isCheckAuthor = false) => (req, res, next) => {
-  const {user} = req.session;
+const {AUTHOR_USER_ID} = require(`../../service/constants`);
 
-  if (!user) {
-    return res.redirect(`/login`);
-  }
+module.exports =
+  (isCheckAuthor = false) =>
+    (req, res, next) => {
+      const {user} = req.session;
 
-  if (isCheckAuthor && user.id !== 1) {
-    return res.redirect(`/404`);
-  }
+      if (!user) {
+        return res.redirect(`/login`);
+      }
 
-  return next();
-};
+      if (isCheckAuthor && user.id !== AUTHOR_USER_ID) {
+        return res.redirect(`/404`);
+      }
+
+      return next();
+    };

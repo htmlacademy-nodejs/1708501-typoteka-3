@@ -24,7 +24,7 @@ header.header
           a.header__exit(href='/logout') Выйти
 
     a.header__avatar.avatar
-      img(src=`${user.avatar}` alt=`Аватар пользователя ${user.firstName} ${user.lastName}`)
+      img(src=`/img/${user.avatar}` alt=`Аватар пользователя ${user.firstName} ${user.lastName}`)
 
   else
     nav.header__nav

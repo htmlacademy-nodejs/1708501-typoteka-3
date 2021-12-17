@@ -18,7 +18,7 @@ html(lang='ru')
       }
   body
     mixin insertArticleImage(article)
-      img(class!=attributes.class src=`/img/${article.picture ? article.picture : 'unnamed.jpg'}` alt=article.title width='460' height='240')
+      img(class!=attributes.class src=`/img/${article.picture ? article.picture : 'unnamed.jpg'}` alt=article.title)
 
     mixin pagination(page, totalPages, width, prefix)
       -
@@ -57,12 +57,16 @@ html(lang='ru')
     mixin insertErrorMessage(messages)
       if messages
         each message of messages
-          .server-error= message
+          p.form__error-message= message
 
-    include partials/header.pug
+    .wrapper
+      include partials/header.pug
 
-    block content
+      block content
 
-    include partials/footer.pug
+      include partials/footer.pug
+
     script(src="/js/vendor.js")
     script(src="/js/main.js")
+    script(src="https://cdn.socket.io/4.4.0/socket.io.min.js" integrity="sha384-1fOn6VtTq3PWwfsOrk45LnYcGosJwzMHv+Xh/Jx5303FVOXzEnw0EpLv30mtjmlj" crossorigin="anonymous")
+    script(src="/js/socket.js")

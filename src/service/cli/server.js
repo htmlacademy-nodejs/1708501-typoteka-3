@@ -1,16 +1,15 @@
 "use strict";
 
 const express = require(`express`);
-
 const {getLogger} = require(`../lib/logger`);
-const apiRoutes = require(`../api`);
+const sequelize = require(`../lib/sequelize`);
+const {apiRoutes} = require(`../api`);
 const {
   HttpCode,
   DEFAULT_SERVER_PORT,
   API_PREFIX,
   ExitCode,
 } = require(`../constants`);
-const sequelize = require(`../lib/sequelize`);
 
 const logger = getLogger({name: `api`});
 
@@ -30,6 +29,7 @@ module.exports = {
     const port = Number.parseInt(customPort, 10) || DEFAULT_SERVER_PORT;
 
     const app = express();
+
     app.use(express.json());
 
     app.use((req, res, next) => {

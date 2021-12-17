@@ -7,17 +7,14 @@ class API {
   constructor(baseURL, timeout) {
     this._http = axios.create({
       baseURL,
-      timeout
+      timeout,
     });
   }
 
-  async _load(url, options) {
-    const response = await this._http.request({url, ...options});
-    return response.data;
-  }
-
   getArticles({categoryId, offset, limit, comments, orderByComments}) {
-    return this._load(`/articles`, {params: {categoryId, offset, limit, comments, orderByComments}});
+    return this._load(`/articles`, {
+      params: {categoryId, offset, limit, comments, orderByComments},
+    });
   }
 
   getArticle(id) {
@@ -39,48 +36,48 @@ class API {
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
-      data
+      data,
     });
   }
 
   editArticle(id, data) {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.PUT,
-      data
+      data,
     });
   }
 
   createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
-      data
+      data,
     });
   }
 
   createUser({data}) {
     return this._load(`/user`, {
       method: HttpMethod.POST,
-      data
+      data,
     });
   }
 
   auth(email, password) {
     return this._load(`/user/auth`, {
       method: HttpMethod.POST,
-      data: {email, password}
+      data: {email, password},
     });
   }
 
   deleteArticle(id) {
     return this._load(`/articles/${id}`, {
-      method: HttpMethod.DELETE
+      method: HttpMethod.DELETE,
     });
   }
 
   addCategory(data) {
     return this._load(`/categories`, {
       method: HttpMethod.POST,
-      data
+      data,
     });
   }
 
@@ -93,7 +90,7 @@ class API {
   updateCategory(id, data) {
     return this._load(`/categories/${id}`, {
       method: HttpMethod.PUT,
-      data
+      data,
     });
   }
 
@@ -101,6 +98,11 @@ class API {
     return this._load(`/articles/${articleId}/comments/${commentId}`, {
       method: HttpMethod.DELETE,
     });
+  }
+
+  async _load(url, options) {
+    const response = await this._http.request({url, ...options});
+    return response.data;
   }
 }
 
@@ -113,5 +115,5 @@ const defaultAPI = new API(defaultUrl, TIMEOUT);
 
 module.exports = {
   API,
-  getAPI: () => defaultAPI
+  getAPI: () => defaultAPI,
 };

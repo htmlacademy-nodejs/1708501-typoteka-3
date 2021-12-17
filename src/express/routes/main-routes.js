@@ -2,50 +2,55 @@
 
 const {Router} = require(`express`);
 const csrf = require(`csurf`);
+const asyncHandler = require(`express-async-handler`);
 
 const api = require(`../api`).getAPI();
 const {getLogger} = require(`../../service/lib/logger`);
-const upload = require(`../../service/middlewares/upload`);
+const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
-const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
-
-const MOST_COMMENTED_ARTICLES_LIMIT = 4;
-const LAST_COMMENTS_LIMIT = 4;
+const {
+  ARTICLES_PER_PAGE,
+  LAST_COMMENTS_LIMIT,
+  MOST_COMMENTED_ARTICLES_LIMIT,
+} = require(`../../service/constants`);
 
 const logger = getLogger({name: `api`});
 const mainRouter = new Router();
 const csrfProtection = csrf();
 
-mainRouter.get(`/`, async (req, res) => {
-  const {user} = req.session;
-  let {page = 1} = req.query;
-  page = +page;
+mainRouter.get(
+    `/`,
+    asyncHandler(async (req, res) => {
+      const {user} = req.session;
+      let {page = 1} = req.query;
+      page = +page;
 
-  const limit = ARTICLES_PER_PAGE;
-  const offset = (page - 1) * ARTICLES_PER_PAGE;
+      const limit = ARTICLES_PER_PAGE;
+      const offset = (page - 1) * ARTICLES_PER_PAGE;
 
-  const [{count, articles}, mostCommentedArticles, categories, comments] =
-    await Promise.all([
-      api.getArticles({limit, offset, comments: true}),
-      api.getArticles({
-        limit: MOST_COMMENTED_ARTICLES_LIMIT,
-        orderByComments: true,
-      }),
-      api.getCategories(true),
-      api.getLastComments(LAST_COMMENTS_LIMIT),
-    ]);
-  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
-  res.render(`main`, {
-    articles,
-    mostCommentedArticles,
-    comments,
-    page,
-    totalPages,
-    categories,
-    user,
-  });
-});
+      const [{count, articles}, mostCommentedArticles, categories, comments] =
+      await Promise.all([
+        api.getArticles({limit, offset, comments: true}),
+        api.getArticles({
+          limit: MOST_COMMENTED_ARTICLES_LIMIT,
+          orderByComments: true,
+        }),
+        api.getCategories(true),
+        api.getLastComments(LAST_COMMENTS_LIMIT),
+      ]);
+      const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+      res.render(`main`, {
+        articles,
+        mostCommentedArticles,
+        comments,
+        page,
+        totalPages,
+        categories,
+        user,
+      });
+    })
+);
 
 mainRouter.get(`/search`, async (req, res) => {
   const {user} = req.session;
@@ -70,27 +75,31 @@ mainRouter.get(`/register`, (req, res) => {
   res.render(`sign-up`);
 });
 
-mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
-  const {body, file} = req;
+mainRouter.post(
+    `/register`,
+    upload.single(`avatar`),
+    asyncHandler(async (req, res) => {
+      const {body, file} = req;
 
-  const userData = {
-    avatar: file ? file.filename : ``,
-    firstName: body.firstName,
-    lastName: body.lastName,
-    email: body.email,
-    password: body.password,
-    passwordRepeated: body[`repeat-password`],
-  };
+      const userData = {
+        avatar: file ? file.filename : ``,
+        firstName: body.firstName,
+        lastName: body.lastName,
+        email: body.email,
+        password: body.password,
+        passwordRepeated: body[`repeat-password`],
+      };
 
-  try {
-    await api.createUser({data: userData});
-    res.redirect(`/login`);
-  } catch (errors) {
-    const validationMessages = prepareErrors(errors);
-    logger.error(`An error user registration: ${validationMessages}`);
-    res.render(`sign-up`, {validationMessages});
-  }
-});
+      try {
+        await api.createUser({data: userData});
+        res.redirect(`/login`);
+      } catch (errors) {
+        const validationMessages = prepareErrors(errors);
+        logger.error(`An error user registration: ${validationMessages}`);
+        res.render(`sign-up`, {validationMessages});
+      }
+    })
+);
 
 mainRouter.get(`/login`, (req, res) => {
   const {user} = req.session;
@@ -98,29 +107,34 @@ mainRouter.get(`/login`, (req, res) => {
   res.render(`login`, {user});
 });
 
-mainRouter.post(`/login`, async (req, res) => {
-  try {
-    const user = await api.auth(req.body.email, req.body.password);
-    req.session.user = user;
-    req.session.save(() => {
-      res.redirect(`/`);
-    });
-  } catch (errors) {
-    const validationMessages = prepareErrors(errors);
-    const {user} = req.session;
-    res.render(`login`, {user, validationMessages});
-  }
-});
+mainRouter.post(
+    `/login`,
+    asyncHandler(async (req, res) => {
+      try {
+        const user = await api.auth(req.body.email, req.body.password);
+        req.session.user = user;
+        req.session.save(() => {
+          res.redirect(`/`);
+        });
+      } catch (errors) {
+        const validationMessages = prepareErrors(errors);
+        const {user} = req.session;
+        res.render(`login`, {user, validationMessages});
+      }
+    })
+);
 
 mainRouter.get(`/logout`, (req, res) => {
   delete req.session.user;
-  res.redirect(`/`);
+  req.session.save(() => {
+    res.redirect(`/`);
+  });
 });
 
 mainRouter.get(
     `/categories`,
     [auth(true), csrfProtection],
-    async (req, res) => {
+    asyncHandler(async (req, res) => {
       const {
         session: {user},
       } = req;
@@ -131,13 +145,13 @@ mainRouter.get(
         user,
         csrfToken: req.csrfToken(),
       });
-    }
+    })
 );
 
 mainRouter.post(
     `/categories`,
     [auth(true), csrfProtection],
-    async (req, res) => {
+    asyncHandler(async (req, res) => {
       const {
         body: {name},
       } = req;
@@ -158,13 +172,13 @@ mainRouter.post(
           csrfToken: req.csrfToken(),
         });
       }
-    }
+    })
 );
 
 mainRouter.post(
     `/categories/:categoryId`,
     [auth(true), csrfProtection],
-    async (req, res) => {
+    asyncHandler(async (req, res) => {
       const {
         body: {name},
       } = req;
@@ -186,18 +200,18 @@ mainRouter.post(
           csrfToken: req.csrfToken(),
         });
       }
-    }
+    })
 );
 
 mainRouter.get(
     `/categories/delete/:categoryId`,
     [auth(true)],
-    async (req, res) => {
+    asyncHandler(async (req, res) => {
       const {categoryId} = req.params;
 
       await api.deleteCategory(categoryId);
       res.redirect(`/categories`);
-    }
+    })
 );
 
 module.exports = mainRouter;

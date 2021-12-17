@@ -5,7 +5,7 @@ block content
     h1.visually-hidden Регистрация пользователя
     section
       .popup.popup--registration.popup--anti
-        a.popup__button.button.button--popup-close(aria-label='Закрыть окно')
+        a.popup__button.button.button--popup-close(href='/' aria-label='Закрыть окно')
           | Закрыть
           | окно
         h2.popup__title Регистрация
@@ -33,6 +33,6 @@ block content
               a.form__avatar.avatar
                 img(src='/img/icons/smile.svg' alt='аватар пользователя')
               label
-                input.visually-hidden(type='file' name='avatar')
+                input.visually-hidden(type='file' name='avatar' accept='image/png,image/jpg, image/jpeg')
                 | Загрузить фото профиля
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type='submit') Зарегистрироваться
