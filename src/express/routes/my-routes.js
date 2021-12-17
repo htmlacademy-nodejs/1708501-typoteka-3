@@ -28,7 +28,7 @@ myRouter.get(
     asyncHandler(async (req, res) => {
       const {user} = req.session;
       const comments = await api.getLastComments();
-      console.log(`comments`, comments);
+
       res.render(`admin/comments`, {comments, user});
     })
 );

@@ -31,7 +31,7 @@ block content
                 .preview__background
                   +insertArticleImage(article)(class="preview__background-image")
 
-                time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, 'article')}
+                time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, "article")}
                 h3.preview__name
                   a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
                 p.preview__text #{article.announce}

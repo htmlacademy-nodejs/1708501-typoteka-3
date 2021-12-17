@@ -135,12 +135,17 @@ articlesRouter.post(
       const {user} = session;
       const {id} = req.params;
 
+      let picture = body.picture || ``;
+      if (file) {
+        picture = file.filename;
+      }
+
       const articleData = {
         userId: user.id,
         title: body.title,
         announce: body.announce,
         fullText: body.fullText,
-        picture: file ? file.filename : ``,
+        picture,
         categories: Array.isArray(body.categories)
           ? body.categories
           : [body.categories],
