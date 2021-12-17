@@ -84,7 +84,6 @@ articlesRouter.post(
       const {user} = session;
 
       const articleData = {
-        userId: user.id,
         title: body.title,
         announce: body.announce,
         fullText: body.fullText,
@@ -95,16 +94,30 @@ articlesRouter.post(
       };
 
       try {
-        await api.createArticle(articleData);
+        await api.createArticle({
+          ...articleData,
+          userId: user.id,
+        });
         res.redirect(`/my`);
       } catch (errors) {
         const validationMessages = prepareErrors(errors);
         const categories = await getAddArticleData();
         logger.error(`An error article create: ${validationMessages}`);
+
+        let picture = body.picture || ``;
+        if (file) {
+          picture = file.filename;
+        }
+        console.log(`articleData.categories`, articleData.categories);
         res.render(`article/new-article`, {
           categories,
           validationMessages,
           csrfToken: req.csrfToken(),
+          article: {
+            ...articleData,
+            userId: user.id,
+            picture,
+          }
         });
       }
     })
