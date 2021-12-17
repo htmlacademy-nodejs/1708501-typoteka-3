@@ -37,8 +37,13 @@ const prepareErrors = (errors) => {
   return errors.response.data.split(`\n`);
 };
 
-const formatDate = (date) => {
-  return dayjs(date).format(`hh:mm DD.MM.YYYY`);
+const formatDate = (date, type = `article`) => {
+  const formatByType = {
+    default: `DD.MM.YYYY`,
+    article: `DD.MM.YYYY`,
+    comment: `DD.MM.YYYY, hh:mm`
+  };
+  return dayjs(date).format(formatByType[type] || formatByType.default);
 };
 
 module.exports = {
