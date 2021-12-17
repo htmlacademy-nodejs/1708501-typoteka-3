@@ -2,9 +2,7 @@
 
 const {Router} = require(`express`);
 
-const {
-  HttpCode,
-} = require(`../constants`);
+const {HttpCode} = require(`../constants`);
 
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exist`);
@@ -20,13 +18,11 @@ module.exports = (app, articleService, commentService) => {
   // GET /api/articles - ресурс возвращает список публикаций;
   route.get(`/`, [routeQueryValidator], async (req, res) => {
     const {categoryId, offset, limit, comments, orderByComments} = req.query;
-    let articles;
 
-    if (limit || offset) {
-      articles = await articleService.findPage({categoryId, limit, offset});
-    } else {
-      articles = await articleService.findAll(comments === `true`);
-    }
+    let articles =
+      limit || offset
+        ? await articleService.findPage({categoryId, limit, offset})
+        : await articleService.findAll(comments === `true`);
 
     if (orderByComments) {
       articles = await articleService.getMostCommentedArticles({limit});

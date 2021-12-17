@@ -24,9 +24,9 @@ class CategoryService {
       });
 
       return result.map((it) => it.get());
-    } else {
-      return this._Category.findAll({raw: true});
     }
+
+    return this._Category.findAll({raw: true});
   }
 
   async findOne(id) {
