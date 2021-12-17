@@ -171,10 +171,21 @@ articlesRouter.get(
       const {user} = req.session;
       const {id} = req.params;
 
-      const [article, categories] = await Promise.all([
+      const [rawArticle, allCategories] = await Promise.all([
         api.getArticle(id),
         api.getCategories(true),
       ]);
+      const {categories} = rawArticle;
+      const article = {
+        ...rawArticle,
+        categories: categories.map(
+            (cat) =>
+              ({
+                ...cat,
+                count: allCategories.find(({id: catId}) => cat.id === catId),
+              }.count)
+        ),
+      };
       res.render(`article/article`, {
         article,
         categories,
