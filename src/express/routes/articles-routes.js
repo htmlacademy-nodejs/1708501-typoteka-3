@@ -9,7 +9,7 @@ const {getLogger} = require(`../../service/lib/logger`);
 const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
-const {ARTICLES_PER_PAGE} = require(`../../service/constants`);
+const {ARTICLES_PER_PAGE, MOST_COMMENTED_ARTICLES_LIMIT, LAST_COMMENTS_LIMIT} = require(`../../service/constants`);
 
 const logger = getLogger({name: `api`});
 const articlesRouter = new Router();
@@ -117,7 +117,7 @@ articlesRouter.post(
             ...articleData,
             userId: user.id,
             picture,
-          }
+          },
         });
       }
     })
@@ -223,6 +223,18 @@ articlesRouter.post(
 
       try {
         await api.createComment(id, {userId: user.id, text: body.comment});
+
+        const [mostCommentedArticles, lastComments] = await Promise.all([
+          api.getArticles({
+            limit: MOST_COMMENTED_ARTICLES_LIMIT,
+            orderByComments: true,
+          }),
+          api.getLastComments(LAST_COMMENTS_LIMIT),
+        ]);
+        const io = req.app.locals.socketio;
+
+        io.emit(`comment:create`, mostCommentedArticles, lastComments);
+
         res.redirect(`/articles/${id}`);
       } catch (errors) {
         const validationMessages = prepareErrors(errors);

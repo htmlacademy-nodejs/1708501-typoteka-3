@@ -4,8 +4,6 @@ const {Router} = require(`express`);
 
 const {
   HttpCode,
-  LAST_COMMENTS_LIMIT,
-  MOST_COMMENTED_ARTICLES_LIMIT,
 } = require(`../constants`);
 
 const articleValidator = require(`../middlewares/article-validator`);
@@ -117,18 +115,6 @@ module.exports = (app, articleService, commentService) => {
       async (req, res) => {
         const {articleId} = req.params;
         const comment = await commentService.create(articleId, req.body);
-
-        if (comment) {
-          const io = req.app.locals.socketio;
-          const comments = await commentService.getLastComments(
-              LAST_COMMENTS_LIMIT
-          );
-          const articles = await articleService.getMostCommentedArticles({
-            limit: MOST_COMMENTED_ARTICLES_LIMIT,
-          });
-
-          io.emit(`comment:create`, articles, comments);
-        }
 
         return res.status(HttpCode.CREATED).json(comment);
       }

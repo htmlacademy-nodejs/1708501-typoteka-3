@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-  const SERVER_URL = `http://localhost:3000`;
+  const SERVER_URL = `http://localhost:8080`;
   const socket = io(SERVER_URL);
 
   const lastCommentsList = document.querySelector('.last__list');

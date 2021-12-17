@@ -2,7 +2,6 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../constants`);
-const CategoryService = require(`../data-service/category`);
 const categoryExist = require(`../middlewares/category-exists`);
 const categoryValidator = require(`../middlewares/category-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
