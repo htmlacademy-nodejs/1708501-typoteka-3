@@ -57,7 +57,7 @@ html(lang='ru')
     mixin insertErrorMessage(messages)
       if messages
         each message of messages
-          .server-error= message
+          p.form__error-message= message
 
     .wrapper
       include partials/header.pug
