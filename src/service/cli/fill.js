@@ -14,7 +14,7 @@ const {
   FILE_TITLES_PATH,
   FILE_CATEGORIES_PATH,
   FILE_COMMENTS_PATH,
-} = require(`./blogConstants`);
+} = require(`./blog-constants`);
 const {ExitCode} = require(`../constants`);
 const {getRandomPicture} = require(`./helpers`);
 

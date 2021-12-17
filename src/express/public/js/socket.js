@@ -1,7 +1,7 @@
 "use strict";
 
 (() => {
-  const SERVER_URL = `http://localhost:3000`;
+  const SERVER_URL = `http://localhost:8080`;
   const socket = io(SERVER_URL);
 
   const lastCommentsList = document.querySelector('.last__list');
@@ -24,7 +24,7 @@
       <li class="last__list-item">
         <img
           class="last__list-image"
-          src="${comment.user.avatar}"
+          src="/img/${comment.user.avatar}"
           width="20" height="20" alt="Аватар пользователя"
         />
         <b class="last__list-name">

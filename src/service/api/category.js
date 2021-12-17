@@ -32,10 +32,9 @@ module.exports = (app, categoryService) => {
       async (req, res) => {
         const {name} = req.body;
         const {categoryId} = req.params;
-        const updatedCategory = await categoryService.update(
-            categoryId,
-            {name}
-        );
+        const updatedCategory = await categoryService.update(categoryId, {
+          name,
+        });
 
         if (!updatedCategory) {
           return res
@@ -52,14 +51,14 @@ module.exports = (app, categoryService) => {
       [routeParamsValidator, categoryExist(categoryService)],
       async (req, res) => {
         const {categoryId} = req.params;
-        const deletedCategory = await categoryService.drop(categoryId);
+        const categoryHasArticles =
+        !!(await categoryService.getArticlesInCategoryCount(categoryId));
 
-        if (!deletedCategory) {
-          return res
-          .status(HttpCode.NOT_FOUND)
-          .send(`Not found with ${categoryId}`);
+        if (categoryHasArticles) {
+          return res.status(HttpCode.BAD_REQUEST).json(!categoryHasArticles);
         }
 
+        const deletedCategory = await categoryService.drop(categoryId);
         return res.status(HttpCode.OK).json(deletedCategory);
       }
   );

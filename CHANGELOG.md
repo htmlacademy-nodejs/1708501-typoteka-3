@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.16.0...v1.17.0) (2021-12-17)
+
+
+### Features
+
+* оживил Горячее с помощью socketio ([8a28b09](https://github.com/YoginAlex/1708501-typoteka-3/commit/8a28b0960d4779e6627e1bdc429051e0e9f428fb))
+
+
+### Bug Fixes
+
+* добавил asyncHandler на все пути на фронте. Теперь падет с правильной страницей 500 ([4bb0909](https://github.com/YoginAlex/1708501-typoteka-3/commit/4bb0909da1d8fb0dbaed9d2e7339a63bcdd75a49))
+* добавил gitkeep для изначальн пустых папок ([4eebffc](https://github.com/YoginAlex/1708501-typoteka-3/commit/4eebffce81059ddac22c31d6c413844eff5be383))
+* добавил валидатор чтобы категория была номером ([d312a57](https://github.com/YoginAlex/1708501-typoteka-3/commit/d312a57e5738c2af4b93996645643114650b4d37))
+* добавил тернарники там, где можно ([da4c4b1](https://github.com/YoginAlex/1708501-typoteka-3/commit/da4c4b123abe587daec2b13ef79d5591fbd69045))
+* перенёс socletio на фронт ([d9821b8](https://github.com/YoginAlex/1708501-typoteka-3/commit/d9821b89a26457de2fb32311d9bc8af8564257da))
+* поправил аватары пользователей и их загрузку ([2c2c4af](https://github.com/YoginAlex/1708501-typoteka-3/commit/2c2c4af66affae1770cc53e53e38fddcaa7dcc2e))
+* поправил вёрстку страницы публикации ([e5ff0ef](https://github.com/YoginAlex/1708501-typoteka-3/commit/e5ff0ef6f984e06edfd2fd176a55952c631c07dd))
+* поправил нейминг файлов и добавил SESSION_SECRET в описание ([8d14d37](https://github.com/YoginAlex/1708501-typoteka-3/commit/8d14d37c41c7f9446ef62fb2b00c40fa5acb8585))
+* поправил обязательно аватара при регистрации ([1a690d2](https://github.com/YoginAlex/1708501-typoteka-3/commit/1a690d2c4270d610ab83024e85999d1d010324f3))
+* поправил отображение дат на макетах ([1fc12fa](https://github.com/YoginAlex/1708501-typoteka-3/commit/1fc12fae4620848351acec7db7aef32f29946eb2))
+* поправил список категорий на странице публикации ([e186665](https://github.com/YoginAlex/1708501-typoteka-3/commit/e1866650be63957d501f63b6d928f61896b5335f))
+* поправил ссылки на категории и статьи в шаблонах ([668e98b](https://github.com/YoginAlex/1708501-typoteka-3/commit/668e98b7f58b4db3bc4d91e53825358d31b10ea2))
+* поправил ссылки на редактирование публикации ([c470ed7](https://github.com/YoginAlex/1708501-typoteka-3/commit/c470ed74e023f2fafa003ba622a692dc81677e41))
+* поправил тесты ([a61eee9](https://github.com/YoginAlex/1708501-typoteka-3/commit/a61eee9c31c7073b7a91eafa6002201c888223e9))
+* после ревью ([905a9a2](https://github.com/YoginAlex/1708501-typoteka-3/commit/905a9a2dc9c1a88523a2cfb7782c922becf986e6))
+* правильное отображение категорий при редактировании ([8e7df54](https://github.com/YoginAlex/1708501-typoteka-3/commit/8e7df548ad1fe893797a4abb35bc7f8151febfad))
+* правки вёрстки ошибок ([e4831a6](https://github.com/YoginAlex/1708501-typoteka-3/commit/e4831a600046838910e458dc3501644927ffc656))
+* при добавлении сохраняю то, что вводили ранее ([5eb9770](https://github.com/YoginAlex/1708501-typoteka-3/commit/5eb9770d9bd48ba1dd3b6140a70cd96b478118e6))
+* сохранение сессии после удаления пользователя при логауте ([f808a5b](https://github.com/YoginAlex/1708501-typoteka-3/commit/f808a5bfd1ae9e33ead4dbdb93e17a310ad71222))
+* теперь нельзя удалить категорию в которой есть публикации ([0f3e0ba](https://github.com/YoginAlex/1708501-typoteka-3/commit/0f3e0ba4671c368058c1fac506e4c0e211b1f9e1))
+* убрал логику из  index файлов ([3b509b7](https://github.com/YoginAlex/1708501-typoteka-3/commit/3b509b7022d23c5aaa38cdf81a595838c2f44941))
+* убрал логику из index файла ([568a2a4](https://github.com/YoginAlex/1708501-typoteka-3/commit/568a2a4f940e02220d55caf0d3dea884c5c1c1d7))
+* убрал магическую цифру ([aae6401](https://github.com/YoginAlex/1708501-typoteka-3/commit/aae6401b9101f096e0480fb177679dd1f2f1e8b3))
+* убрал неиспользуемый код ([2944319](https://github.com/YoginAlex/1708501-typoteka-3/commit/29443191259abeebd1db2dd849e3bdba2a6d9cb5))
+
 ## [1.16.0](https://github.com/YoginAlex/1708501-typoteka-3/compare/v1.15.0...v1.16.0) (2021-12-12)
 
 

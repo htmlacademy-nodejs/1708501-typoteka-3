@@ -9,21 +9,24 @@ block content
         .post__wrapper
           .post__head
             a.post__backwards.button.button--backwards(href='/') Назад
-            time.post__date(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
+            time.post__date(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, "article")}
             h2.post__title.title.title--main #{article.title}
 
             ul.post__themes.themes
               each category in article.categories
                 li.themes__item
-                  a.themes__item-link(href='#')
+                  a.themes__item-link(href=`/articles/category/${category.id}`)
                     | #{category.name}
+                    =" "
+                    sup #{category.count}
 
-          .post__picture
-            +insertArticleImage(article)(alt=`${article.title}`)
+          if article.picture
+            .post__picture
+              img(src=`/img/${article.picture}` alt=article.title)
 
           .post__text
-            | #{article.announce}
-            | #{article.fullText}
+            p #{article.announce}
+            p #{article.fullText}
 
       .post__wrapper.post__wrapper--comments
         section.post__comments.comments
@@ -33,11 +36,11 @@ block content
               each comment in article.comments
                 li.comments__comment
                   .comments__avatar.avatar
-                    img(src=`${comment.user.avatar}` alt=`Aватар пользователя ${comment.user.firstName} ${comment.user.lastName}`)
+                    img(src=`/img/${comment.user.avatar}` alt=`Aватар пользователя ${comment.user.firstName} ${comment.user.lastName}`)
                   .comments__text
                     .comments__head
                       p #{comment.user.firstName} #{comment.user.lastName} •
-                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
+                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt, "comment")}
                     p.comments__message #{comment.text}
           else
             h2.comments__title.title.title--middle Комментарии отсутствуют
@@ -47,7 +50,7 @@ block content
               form(action=`/articles/${article.id}/comments` method='POST')
                 input(type="hidden" name="_csrf" value=csrfToken)
                 .comments__avatar.avatar
-                  img(src=`${user.avatar}` alt=`Aватар пользователя ${user.firstName} ${user.lastName}`)
+                  img(src=`/img/${user.avatar}` alt=`Aватар пользователя ${user.firstName} ${user.lastName}`)
                 label
                   textarea(rows='1' name='comment' placeholder='Присоединиться к обсуждению' required)
                 button.comments__button.button.button--colored(type='submit') Опубликовать

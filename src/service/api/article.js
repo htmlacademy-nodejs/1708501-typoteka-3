@@ -2,16 +2,13 @@
 
 const {Router} = require(`express`);
 
-const {
-  HttpCode,
-  LAST_COMMENTS_LIMIT,
-  MOST_COMMENTED_ARTICLES_LIMIT,
-} = require(`../constants`);
+const {HttpCode} = require(`../constants`);
 
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exist`);
 const commentValidator = require(`../middlewares/comment-validator`);
 const routeParamsValidator = require(`../middlewares/route-params-validator`);
+const routeQueryValidator = require(`../middlewares/route-query-validator`);
 
 module.exports = (app, articleService, commentService) => {
   const route = new Router();
@@ -19,15 +16,13 @@ module.exports = (app, articleService, commentService) => {
   app.use(`/articles`, route);
 
   // GET /api/articles - ресурс возвращает список публикаций;
-  route.get(`/`, async (req, res) => {
+  route.get(`/`, [routeQueryValidator], async (req, res) => {
     const {categoryId, offset, limit, comments, orderByComments} = req.query;
-    let articles;
 
-    if (limit || offset) {
-      articles = await articleService.findPage({categoryId, limit, offset});
-    } else {
-      articles = await articleService.findAll(comments === `true`);
-    }
+    let articles =
+      limit || offset
+        ? await articleService.findPage({categoryId, limit, offset})
+        : await articleService.findAll(comments === `true`);
 
     if (orderByComments) {
       articles = await articleService.getMostCommentedArticles({limit});
@@ -116,18 +111,6 @@ module.exports = (app, articleService, commentService) => {
       async (req, res) => {
         const {articleId} = req.params;
         const comment = await commentService.create(articleId, req.body);
-
-        if (comment) {
-          const io = req.app.locals.socketio;
-          const comments = await commentService.getLastComments(
-              LAST_COMMENTS_LIMIT
-          );
-          const articles = await articleService.getMostCommentedArticles({
-            limit: MOST_COMMENTED_ARTICLES_LIMIT,
-          });
-
-          io.emit(`comment:create`, articles, comments);
-        }
 
         return res.status(HttpCode.CREATED).json(comment);
       }

@@ -1,20 +1,25 @@
 "use strict";
 
 const path = require(`path`);
+const http = require(`http`);
 const express = require(`express`);
 const session = require(`express-session`);
 const SequelizeStore = require(`connect-session-sequelize`)(session.Store);
 
+const {getLogger} = require(`../service/lib/logger`);
+const socket = require(`../service/lib/socket`);
 const sequelize = require(`../service/lib/sequelize`);
 const articlesRoutes = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
 const {
   error404Middleware,
-  error400Middleware,
   error500Middleware,
 } = require(`./middlewares/errors`);
 const {formatDate} = require(`../utils`);
+const {ExitCode} = require(`../service/constants`);
+
+const logger = getLogger({name: `api`});
 
 const DEFAULT_PORT = 8080;
 const PUBLIC_DIR = `public`;
@@ -26,6 +31,10 @@ if (!SESSION_SECRET) {
 }
 
 const app = express();
+const server = http.createServer(app);
+const io = socket(server);
+
+app.locals.socketio = io;
 
 const mySessionStore = new SequelizeStore({
   db: sequelize,
@@ -57,10 +66,22 @@ app.use(`/articles`, articlesRoutes);
 app.locals.formatDate = formatDate;
 
 app.use(error404Middleware);
-app.use(error400Middleware);
 app.use(error500Middleware);
 
 app.set(`views`, path.resolve(__dirname, `templates`));
 app.set(`view engine`, `pug`);
 
-app.listen(DEFAULT_PORT);
+try {
+  server.listen(DEFAULT_PORT, (err) => {
+    if (err) {
+      return logger.error(
+          `An error occurred on front server creation: ${err.message}`
+      );
+    }
+
+    return logger.info(`Listening to connections on ${DEFAULT_PORT}`);
+  });
+} catch (err) {
+  logger.error(`An error occurred: ${err.message}`);
+  process.exit(ExitCode.uncaughtFatalException);
+}

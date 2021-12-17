@@ -1,12 +1,9 @@
 "use strict";
 
 const express = require(`express`);
-const http = require(`http`);
-
-const socket = require(`../lib/socket`);
 const {getLogger} = require(`../lib/logger`);
 const sequelize = require(`../lib/sequelize`);
-const apiRoutes = require(`../api`);
+const {apiRoutes} = require(`../api`);
 const {
   HttpCode,
   DEFAULT_SERVER_PORT,
@@ -32,10 +29,6 @@ module.exports = {
     const port = Number.parseInt(customPort, 10) || DEFAULT_SERVER_PORT;
 
     const app = express();
-    const server = http.createServer(app);
-    const io = socket(server);
-
-    app.locals.socketio = io;
 
     app.use(express.json());
 
@@ -59,7 +52,7 @@ module.exports = {
     });
 
     try {
-      server.listen(port, (err) => {
+      app.listen(port, (err) => {
         if (err) {
           return logger.error(
               `An error occurred on server creation: ${err.message}`
